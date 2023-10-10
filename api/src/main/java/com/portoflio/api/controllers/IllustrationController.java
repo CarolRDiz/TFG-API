@@ -15,6 +15,19 @@ public class IllustrationController {
     @Autowired
     IllustrationService service;
 
+
+    // GET A ILLUSTRATION
+    @GetMapping("/illustrations/{id}/")
+    public ResponseEntity<Object> show(@PathVariable("id")Long id) {
+        try {
+            return new ResponseEntity<>(service.findById(id),HttpStatus.OK);
+        } catch (NotFoundException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     // GET ALL ILLUSTRATIONS
     @GetMapping("/illustrations/")
     public ResponseEntity<Object> index() {
@@ -25,8 +38,8 @@ public class IllustrationController {
     public ResponseEntity<Object> create (@RequestBody IllustrationCreateDTO newIllustration){
         return new ResponseEntity<>(service.create(newIllustration),HttpStatus.CREATED);
     }
-    @DeleteMapping("/illustrations/")
-    public ResponseEntity<Object> delete (Long id) {
+    @DeleteMapping("/illustrations/{id}/")
+    public ResponseEntity<Object> delete (@PathVariable("id") Long id) {
         HttpStatus httpStatus;
         try {
             service.delete(id);

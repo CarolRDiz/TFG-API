@@ -15,6 +15,17 @@ public class ProductController {
     @Autowired
     ProductService service;
 
+    // GET A PRODUCT
+    @GetMapping("/products/{id}/")
+    public ResponseEntity<Object> show(@PathVariable("id")Long id) {
+        try {
+            return new ResponseEntity<>(service.findById(id),HttpStatus.OK);
+        } catch (NotFoundException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     // GET ALL PRODUCTS
     @GetMapping("/products/")
     public ResponseEntity<Object> index() {
@@ -26,8 +37,8 @@ public class ProductController {
         return new ResponseEntity<>(service.create(newProduct), HttpStatus.CREATED);
     }
     // DELETE A PRODUCT
-    @DeleteMapping("/products/")
-    public ResponseEntity<Object> delete (Long id) {
+    @DeleteMapping("/products/{id}/")
+    public ResponseEntity<Object> delete (@PathVariable("id") Long id) {
         HttpStatus httpStatus;
         try {
             service.delete(id);
