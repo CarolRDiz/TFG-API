@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -28,5 +29,13 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public Image getImage(String id) {
         return imageRepo.findById(id).get();
+    }
+
+    @Override
+    public void deleteImage(String id){
+        Optional<Image> image = imageRepo.findById(id);
+        if (image.isPresent()){
+            imageRepo.delete(image.get());
+        }
     }
 }

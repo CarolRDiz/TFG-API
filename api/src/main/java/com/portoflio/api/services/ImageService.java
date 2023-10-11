@@ -10,4 +10,5 @@ import java.io.IOException;
 public interface ImageService {
     String addImage(String title, MultipartFile file) throws IOException;
     Image getImage(String id);
+    void deleteImage(String id);
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bson.types.Binary;
 
 @Getter
 @Setter
@@ -13,5 +14,4 @@ public class IllustrationDTO {
     private Long id;
     private String title;
     private String date;
-    private String image_id;
-}
+    private Binary image;}
