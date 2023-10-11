@@ -5,8 +5,11 @@ import com.portoflio.api.exceptions.NotFoundException;
 import com.portoflio.api.services.IllustrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -33,11 +36,13 @@ public class IllustrationController {
     public ResponseEntity<Object> index() {
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
     }
+
     // POST A ILLUSTRATION
-    @RequestMapping(path = "/illustrations/", method = POST)
-    public ResponseEntity<Object> create (@RequestBody IllustrationCreateDTO newIllustration){
+    @RequestMapping(path = "/illustrations/", method = POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Object> create (@ModelAttribute IllustrationCreateDTO newIllustration) throws IOException {
         return new ResponseEntity<>(service.create(newIllustration),HttpStatus.CREATED);
     }
+
     @DeleteMapping("/illustrations/{id}/")
     public ResponseEntity<Object> delete (@PathVariable("id") Long id) {
         HttpStatus httpStatus;

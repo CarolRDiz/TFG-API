@@ -8,10 +8,12 @@ import com.portoflio.api.exceptions.NotFoundException;
 import com.portoflio.api.models.Illustration;
 import com.portoflio.api.models.Product;
 import com.portoflio.api.services.IllustrationService;
+import com.portoflio.api.services.ImageService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,12 +22,16 @@ import java.util.stream.Collectors;
 public class IllustrationServiceImpl implements IllustrationService {
     @Autowired
     IllustrationRepository repository;
-
+    @Autowired
+    ImageService imageService;
     private ModelMapper mapper = new ModelMapper();
 
     @Override
-    public IllustrationDTO create (IllustrationCreateDTO newIlustration){
+    public IllustrationDTO create (IllustrationCreateDTO newIlustration) throws IOException {
+        String image_id = imageService.addImage( newIlustration.getTitle(), newIlustration.getImage());
+
         Illustration illustration = this.mapper.map(newIlustration, Illustration.class);
+        illustration.setImage_id(image_id);
         repository.save(illustration);
         return this.mapper.map(illustration, IllustrationDTO.class);
     }

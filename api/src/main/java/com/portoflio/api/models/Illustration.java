@@ -16,6 +16,6 @@ public class Illustration {
     private Long id;
     private String title;
     private String date;
-
+    private String image_id;
 
 }

@@ -13,4 +13,5 @@ public class IllustrationDTO {
     private Long id;
     private String title;
     private String date;
+    private String image_id;
 }
