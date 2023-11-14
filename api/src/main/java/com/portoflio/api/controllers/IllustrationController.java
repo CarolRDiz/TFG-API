@@ -14,11 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.ui.Model;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.PATCH;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+@CrossOrigin(origins = "http://localhost:5173/", maxAge = 3600)
 @RestController
 public class IllustrationController {
     @Autowired
@@ -80,6 +82,20 @@ public class IllustrationController {
         HttpStatus httpStatus;
         try {
             service.delete(id);
+            httpStatus = HttpStatus.CREATED;
+        } catch (NotFoundException e) {
+            httpStatus = HttpStatus.NOT_FOUND;
+        } catch (Exception e) {
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<>(httpStatus);
+    }
+    // DELETE SOME ILLUSTRATIONS
+    @DeleteMapping("/illustrations/")
+    public ResponseEntity<Object> deleteList (@RequestParam("ids") List<Long> ids) {
+        HttpStatus httpStatus;
+        try {
+            service.deleteList(ids);
             httpStatus = HttpStatus.CREATED;
         } catch (NotFoundException e) {
             httpStatus = HttpStatus.NOT_FOUND;

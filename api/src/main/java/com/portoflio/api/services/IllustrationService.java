@@ -11,6 +11,7 @@ import java.util.Map;
 public interface IllustrationService {
     IllustrationDTO create(IllustrationCreateDTO newIlustration) throws IOException;
     void delete (Long id);
+    void deleteList (List<Long> ids);
     List<IllustrationDTO> findAll();
     IllustrationDTO findById(Long id);
     IllustrationDTO updateImage (Long id, MultipartFile image) throws IOException;

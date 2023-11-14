@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bson.types.Binary;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -12,6 +15,8 @@ import org.bson.types.Binary;
 @NoArgsConstructor
 public class IllustrationDTO {
     private Long id;
-    private String title;
-    private String date;
-    private Binary image;}
+    private String name;
+    private String description;
+    //private String date;
+    private Binary image;
+    private List<String> tags;}

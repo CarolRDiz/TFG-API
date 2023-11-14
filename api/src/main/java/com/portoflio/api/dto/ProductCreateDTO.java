@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductCreateDTO {
-    private String title;
+    private String name;
     private String date;
     private Double price;
     private String description;

@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
@@ -31,6 +33,12 @@ public class ProductController {
     public ResponseEntity<Object> index() {
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
     }
+    // GET FILTERED PRODUCTS
+    @GetMapping("/products/list")
+    public ResponseEntity<Object> indexFilter(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "price", required = false) Double price) {
+        return new ResponseEntity<>(service.findFilter(name,price), HttpStatus.OK);
+    }
+
     // POST A PRODUCT
     @RequestMapping(path = "/products/", method = POST)
     public ResponseEntity<Object> create(@RequestBody ProductCreateDTO newProduct){
@@ -42,6 +50,20 @@ public class ProductController {
         HttpStatus httpStatus;
         try {
             service.delete(id);
+            httpStatus = HttpStatus.CREATED;
+        } catch (NotFoundException e) {
+            httpStatus = HttpStatus.NOT_FOUND;
+        } catch (Exception e) {
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<>(httpStatus);
+    }
+    // DELETE SOME PRODUCTS
+    @DeleteMapping("/products/")
+    public ResponseEntity<Object> delete (@RequestParam("ids") List<Long> ids) {
+        HttpStatus httpStatus;
+        try {
+            service.deleteList(ids);
             httpStatus = HttpStatus.CREATED;
         } catch (NotFoundException e) {
             httpStatus = HttpStatus.NOT_FOUND;
