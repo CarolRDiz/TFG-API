@@ -1,13 +1,16 @@
 package com.portoflio.api.controllers;
 
+import com.portoflio.api.dto.IllustrationCreateDTO;
 import com.portoflio.api.dto.ProductCreateDTO;
 import com.portoflio.api.exceptions.NotFoundException;
 import com.portoflio.api.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -40,10 +43,11 @@ public class ProductController {
     }
 
     // POST A PRODUCT
-    @RequestMapping(path = "/products/", method = POST)
-    public ResponseEntity<Object> create(@RequestBody ProductCreateDTO newProduct){
+    @RequestMapping(path = "/products/", method = POST,  consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Object> create(@ModelAttribute ProductCreateDTO newProduct) throws IOException {
         return new ResponseEntity<>(service.create(newProduct), HttpStatus.CREATED);
     }
+
     // DELETE A PRODUCT
     @DeleteMapping("/products/{id}/")
     public ResponseEntity<Object> delete (@PathVariable("id") Long id) {

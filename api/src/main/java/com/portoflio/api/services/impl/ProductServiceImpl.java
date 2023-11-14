@@ -1,17 +1,23 @@
 package com.portoflio.api.services.impl;
 
 import com.portoflio.api.dao.ProductRepository;
+import com.portoflio.api.dto.IllustrationCreateDTO;
+import com.portoflio.api.dto.IllustrationDTO;
 import com.portoflio.api.dto.ProductCreateDTO;
 import com.portoflio.api.dto.ProductDTO;
 import com.portoflio.api.exceptions.NotFoundException;
+import com.portoflio.api.models.Illustration;
 import com.portoflio.api.models.Product;
+import com.portoflio.api.services.ImageService;
 import com.portoflio.api.services.ProductService;
 import com.portoflio.api.spec.ProductSpec;
+import org.bson.types.Binary;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,15 +26,22 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductRepository repository;
-
+    @Autowired
+    ImageService imageService;
     private ModelMapper mapper = new ModelMapper();
 
     @Override
-    public ProductDTO create(ProductCreateDTO newProduct){
+    public ProductDTO create(ProductCreateDTO newProduct) throws IOException {
+        String image_id = imageService.addImage( newProduct.getName(), newProduct.getImage());
         Product product = this.mapper.map(newProduct, Product.class);
+        product.setImage_id(image_id);
         repository.save(product);
-        return this.mapper.map(product, ProductDTO.class);
+        ProductDTO dto = this.mapper.map(product, ProductDTO.class);
+        Binary image = imageService.getImage(image_id).getImage();
+        dto.setImage(image);
+        return dto;
     }
+
     @Override
     public void delete(Long id){
         Optional<Product> oProduct = repository.findById(id);
