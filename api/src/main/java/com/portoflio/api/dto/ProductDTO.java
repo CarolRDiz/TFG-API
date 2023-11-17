@@ -17,7 +17,8 @@ public class ProductDTO {
     private String name;
     //private String date;
     private Double price;
-    private Binary image;
+    //private Binary image;
+    private String image_id;
     private String description;
     private List<String> tags;
 }

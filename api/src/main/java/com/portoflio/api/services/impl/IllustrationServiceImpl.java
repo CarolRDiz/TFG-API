@@ -39,8 +39,8 @@ public class IllustrationServiceImpl implements IllustrationService {
         illustration.setImage_id(image_id);
         repository.save(illustration);
         IllustrationDTO dto = this.mapper.map(illustration, IllustrationDTO.class);
-        Binary image = imageService.getImage(image_id).getImage();
-        dto.setImage(image);
+        //Binary image = imageService.getImage(image_id).getImage();
+        //dto.setImage(image);
         return dto;
     }
     @Override
@@ -69,10 +69,10 @@ public class IllustrationServiceImpl implements IllustrationService {
     }
     @Override
     public List<IllustrationDTO> findAll() {
-        Converter<String, Binary> binary = c -> imageService.getImage(c.getSource()).getImage();
+        /*Converter<String, Binary> binary = c -> imageService.getImage(c.getSource()).getImage();
         propertyMapper.addMappings(
                 mapper -> mapper.using(binary).map(Illustration::getImage_id, IllustrationDTO::setImage)
-        );
+        );*/
         List<Illustration> illustrations = repository.findAll();
         List<IllustrationDTO> dtos = illustrations
                 .stream()
@@ -82,10 +82,11 @@ public class IllustrationServiceImpl implements IllustrationService {
     }
     @Override
     public IllustrationDTO findById(Long id) {
+        /*
         Converter<String, Binary> binary = c -> imageService.getImage(c.getSource()).getImage();
         propertyMapper.addMappings(
                 mapper -> mapper.using(binary).map(Illustration::getImage_id, IllustrationDTO::setImage)
-        );
+        );*/
         Optional<Illustration> oIllustration = repository.findById(id);
         if (oIllustration.isPresent()) {
             IllustrationDTO illustrationDTO = this.mapper.map(oIllustration.get(), IllustrationDTO.class);
@@ -96,11 +97,12 @@ public class IllustrationServiceImpl implements IllustrationService {
     }
     @Override
     public IllustrationDTO updateImage (Long id, MultipartFile newImage) throws IOException {
+        /*
         Converter<String, Binary> binary = c -> imageService.getImage(c.getSource()).getImage();
         propertyMapper.addMappings(
                 mapper -> mapper.using(binary).map(Illustration::getImage_id, IllustrationDTO::setImage)
         );
-
+        */
         Optional<Illustration> oIllustration = repository.findById(id);
         if (oIllustration.isPresent()) {
             Illustration illustration = oIllustration.get();
@@ -116,10 +118,11 @@ public class IllustrationServiceImpl implements IllustrationService {
     };
     @Override
     public IllustrationDTO updateChapterByFields(Long id, Map<String, Object> fields){
+        /*
         Converter<String, Binary> binary = c -> imageService.getImage(c.getSource()).getImage();
         propertyMapper.addMappings(
                 mapper -> mapper.using(binary).map(Illustration::getImage_id, IllustrationDTO::setImage)
-        );
+        );*/
         Optional<Illustration> illustration = repository.findById(id);
         if(illustration.isPresent()){
             fields.forEach((key,value) -> {

@@ -54,7 +54,7 @@ public class ProductServiceImpl implements ProductService {
         repository.save(product);
         Binary image = imageService.getImage(image_id).getImage();
         ProductDTO dto = this.mapper.map(product, ProductDTO.class);
-        dto.setImage(image);
+        //dto.setImage(image);
         //dto.setImages(image_binarys);
         return dto;
     }

@@ -18,5 +18,6 @@ public class IllustrationDTO {
     private String name;
     private String description;
     //private String date;
-    private Binary image;
+    //private Binary image;
+    private String image_id;
     private List<String> tags;}
