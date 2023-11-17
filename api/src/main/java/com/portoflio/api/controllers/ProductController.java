@@ -16,6 +16,7 @@ import java.util.List;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173/", maxAge = 3600)
 public class ProductController {
     @Autowired
     ProductService service;
@@ -64,7 +65,7 @@ public class ProductController {
     }
     // DELETE SOME PRODUCTS
     @DeleteMapping("/products/")
-    public ResponseEntity<Object> delete (@RequestParam("ids") List<Long> ids) {
+    public ResponseEntity<Object> deleteList (@RequestParam("ids") List<Long> ids) {
         HttpStatus httpStatus;
         try {
             service.deleteList(ids);

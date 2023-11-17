@@ -16,8 +16,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,13 +34,28 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO create(ProductCreateDTO newProduct) throws IOException {
+        //List<MultipartFile> images = newProduct.getImages();
         String image_id = imageService.addImage( newProduct.getName(), newProduct.getImage());
         Product product = this.mapper.map(newProduct, Product.class);
         product.setImage_id(image_id);
+
+        /*
+        List<String> image_ids = new ArrayList<>();
+        List<Binary> image_binarys = new ArrayList<>();
+
+        for(MultipartFile image : images){
+            String image_id = imageService.addImage( newProduct.getName(), image);
+            image_ids.add(image_id);
+            Binary image_binary = imageService.getImage(image_id).getImage();
+            image_binarys.add(image_binary);
+        }
+        product.setImage_ids(image_ids);
+         */
         repository.save(product);
-        ProductDTO dto = this.mapper.map(product, ProductDTO.class);
         Binary image = imageService.getImage(image_id).getImage();
+        ProductDTO dto = this.mapper.map(product, ProductDTO.class);
         dto.setImage(image);
+        //dto.setImages(image_binarys);
         return dto;
     }
 

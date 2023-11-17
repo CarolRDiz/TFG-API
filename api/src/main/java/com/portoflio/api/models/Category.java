@@ -1,29 +1,34 @@
 package com.portoflio.api.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "products")
-public class Product {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String date;
-    private Double price;
-    private String image_id;
     private String description;
-    private List<String> tags;
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Category category;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private Set<Product> products = new HashSet<>();
+
+    public Category(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }
+
+
+

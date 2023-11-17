@@ -1,22 +1,16 @@
 package com.portoflio.api.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductCreateDTO {
+public class CategoryCreateDTO {
     private String name;
-    //private String date;
-    private Double price;
-    private MultipartFile image;
     private String description;
-    private List<String> tags;
 }

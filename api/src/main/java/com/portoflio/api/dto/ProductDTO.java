@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bson.types.Binary;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,4 +19,5 @@ public class ProductDTO {
     private Double price;
     private Binary image;
     private String description;
+    private List<String> tags;
 }
