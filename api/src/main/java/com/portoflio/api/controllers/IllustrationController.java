@@ -64,6 +64,19 @@ public class IllustrationController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+    @RequestMapping(path = "/illustrations/delete/image/{id}/", method = PATCH)
+    public ResponseEntity<Object> deleteImage(@PathVariable Long id){
+        try{
+            return new ResponseEntity<>(service.deleteImage(id),HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     // UPDATE AN ILLUSTRATION
     @RequestMapping(path = "/illustrations/{id}/", method = PATCH)
     public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody Map<String, Object> fields){

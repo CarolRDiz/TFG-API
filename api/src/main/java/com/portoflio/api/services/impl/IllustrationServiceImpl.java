@@ -34,9 +34,11 @@ public class IllustrationServiceImpl implements IllustrationService {
 
     @Override
     public IllustrationDTO create (IllustrationCreateDTO newIlustration) throws IOException {
-        String image_id = imageService.addImage( newIlustration.getName(), newIlustration.getImage());
         Illustration illustration = this.mapper.map(newIlustration, Illustration.class);
-        illustration.setImage_id(image_id);
+        if(newIlustration.getImage()!=null){
+            String image_id = imageService.addImage( newIlustration.getName(), newIlustration.getImage());
+            illustration.setImage_id(image_id);
+        }
         repository.save(illustration);
         IllustrationDTO dto = this.mapper.map(illustration, IllustrationDTO.class);
         //Binary image = imageService.getImage(image_id).getImage();
@@ -109,6 +111,20 @@ public class IllustrationServiceImpl implements IllustrationService {
             imageService.deleteImage(illustration.getImage_id());
             String image_id = imageService.addImage( illustration.getName(), newImage);
             illustration.setImage_id(image_id);
+            repository.save(illustration);
+            IllustrationDTO illustrationDTO = this.mapper.map(illustration, IllustrationDTO.class);
+            return illustrationDTO;
+        } else {
+            throw new NotFoundException("Illustration not found");
+        }
+    };
+    @Override
+    public IllustrationDTO deleteImage (Long id) {
+        Optional<Illustration> oIllustration = repository.findById(id);
+        if (oIllustration.isPresent()) {
+            Illustration illustration = oIllustration.get();
+            imageService.deleteImage(illustration.getImage_id());
+            illustration.setImage_id(null);
             repository.save(illustration);
             IllustrationDTO illustrationDTO = this.mapper.map(illustration, IllustrationDTO.class);
             return illustrationDTO;

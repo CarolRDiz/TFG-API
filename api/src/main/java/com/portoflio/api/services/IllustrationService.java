@@ -15,5 +15,7 @@ public interface IllustrationService {
     List<IllustrationDTO> findAll();
     IllustrationDTO findById(Long id);
     IllustrationDTO updateImage (Long id, MultipartFile image) throws IOException;
+    IllustrationDTO deleteImage (Long id);
+
     IllustrationDTO updateChapterByFields(Long id, Map<String, Object> fields);
 }
