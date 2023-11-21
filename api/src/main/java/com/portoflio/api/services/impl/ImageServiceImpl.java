@@ -27,6 +27,11 @@ public class ImageServiceImpl implements ImageService {
         return image.getId();
     }
     @Override
+    public String save(Image image) {
+        image = imageRepo.insert(image);
+        return image.getId();
+    }
+    @Override
     public Image getImage(String id) {
         return imageRepo.findById(id).get();
     }

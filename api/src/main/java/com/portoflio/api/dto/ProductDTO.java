@@ -1,5 +1,6 @@
 package com.portoflio.api.dto;
 
+import com.portoflio.api.models.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,9 @@ public class ProductDTO {
     //private String date;
     private Double price;
     //private Binary image;
-    private String image_id;
+    private List<String> image_ids;
     private String description;
     private List<String> tags;
+    private Boolean visibility;
+    private Category category;
 }

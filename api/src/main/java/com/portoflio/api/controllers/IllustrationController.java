@@ -45,6 +45,12 @@ public class IllustrationController {
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
     }
 
+    // GET PUBLIC ILLUSTRATIONS
+    @GetMapping("/illustrations/public/")
+    public ResponseEntity<Object> indexPublic() {
+        return new ResponseEntity<>(service.findPublic(), HttpStatus.OK);
+    }
+
     // POST AN ILLUSTRATION
     @RequestMapping(path = "/illustrations/", method = POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Object> create (@ModelAttribute IllustrationCreateDTO newIllustration) throws IOException {

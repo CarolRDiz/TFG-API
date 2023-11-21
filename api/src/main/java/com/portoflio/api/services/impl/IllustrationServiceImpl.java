@@ -3,8 +3,10 @@ package com.portoflio.api.services.impl;
 import com.portoflio.api.dao.IllustrationRepository;
 import com.portoflio.api.dto.IllustrationCreateDTO;
 import com.portoflio.api.dto.IllustrationDTO;
+import com.portoflio.api.dto.ProductDTO;
 import com.portoflio.api.exceptions.NotFoundException;
 import com.portoflio.api.models.Illustration;
+import com.portoflio.api.models.Product;
 import com.portoflio.api.services.IllustrationService;
 import com.portoflio.api.services.ImageService;
 import org.bson.types.Binary;
@@ -83,6 +85,15 @@ public class IllustrationServiceImpl implements IllustrationService {
         return dtos;
     }
     @Override
+    public List<IllustrationDTO> findPublic() {
+        List<Illustration> illustrations = repository.findByVisibilityTrue();
+        List<IllustrationDTO> dtos = illustrations
+                .stream()
+                .map(illustration -> mapper.map(illustration, IllustrationDTO.class))
+                .collect(Collectors.toList());
+        return dtos;
+    }
+    @Override
     public IllustrationDTO findById(Long id) {
         /*
         Converter<String, Binary> binary = c -> imageService.getImage(c.getSource()).getImage();
@@ -99,16 +110,12 @@ public class IllustrationServiceImpl implements IllustrationService {
     }
     @Override
     public IllustrationDTO updateImage (Long id, MultipartFile newImage) throws IOException {
-        /*
-        Converter<String, Binary> binary = c -> imageService.getImage(c.getSource()).getImage();
-        propertyMapper.addMappings(
-                mapper -> mapper.using(binary).map(Illustration::getImage_id, IllustrationDTO::setImage)
-        );
-        */
         Optional<Illustration> oIllustration = repository.findById(id);
         if (oIllustration.isPresent()) {
             Illustration illustration = oIllustration.get();
-            imageService.deleteImage(illustration.getImage_id());
+            if(illustration.getImage_id()!=null){
+                imageService.deleteImage(illustration.getImage_id());
+            }
             String image_id = imageService.addImage( illustration.getName(), newImage);
             illustration.setImage_id(image_id);
             repository.save(illustration);
@@ -118,6 +125,7 @@ public class IllustrationServiceImpl implements IllustrationService {
             throw new NotFoundException("Illustration not found");
         }
     };
+
     @Override
     public IllustrationDTO deleteImage (Long id) {
         Optional<Illustration> oIllustration = repository.findById(id);

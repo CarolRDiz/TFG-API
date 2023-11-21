@@ -12,5 +12,4 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CategoryCreateDTO {
     private String name;
-    private String description;
 }

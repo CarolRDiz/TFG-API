@@ -11,4 +11,5 @@ public interface ImageService {
     String addImage(String title, MultipartFile file) throws IOException;
     Image getImage(String id);
     void deleteImage(String id);
+    String save(Image image);
 }

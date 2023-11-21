@@ -1,3 +1,5 @@
+package com.portoflio.api.controllers;
+
 import com.portoflio.api.dto.CategoryCreateDTO;
 import com.portoflio.api.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +19,8 @@ public class CategoryController {
     @Autowired
     CategoryService bo;
 
+    //@PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     @RequestMapping(path = "/categories/", method = POST)
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> create(@RequestBody CategoryCreateDTO newCategory){
         try {
             return new ResponseEntity<>(bo.create(newCategory), HttpStatus.CREATED);

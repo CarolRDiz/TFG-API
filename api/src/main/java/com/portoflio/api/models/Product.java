@@ -20,10 +20,22 @@ public class Product {
     private String name;
     private String date;
     private Double price;
-    private String image_id;
+    private List<String> image_ids;
     private String description;
     private List<String> tags;
-    @JsonBackReference
+    //@JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn()
     private Category category;
+
+    private Boolean visibility;
+    public Product(Product product) {
+        this.name =         product.getName();
+        this.date =         product.getDate();
+        this.price =        product.getPrice();
+        this.description =  product.getDescription();
+        this.tags =         product.getTags();
+        this.category =     product.getCategory();
+        this.visibility =   product.getVisibility();
+    }
 }

@@ -23,4 +23,8 @@ public class Image {
         this.title = title;
     }
 
+    public Image(String title, Binary image) {
+        this.title = title;
+        this.image = image;
+    }
 }

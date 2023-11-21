@@ -13,6 +13,7 @@ public interface IllustrationService {
     void delete (Long id);
     void deleteList (List<Long> ids);
     List<IllustrationDTO> findAll();
+    List<IllustrationDTO> findPublic();
     IllustrationDTO findById(Long id);
     IllustrationDTO updateImage (Long id, MultipartFile image) throws IOException;
     IllustrationDTO deleteImage (Long id);
