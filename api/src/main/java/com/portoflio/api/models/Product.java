@@ -2,14 +2,13 @@ package com.portoflio.api.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "products")
@@ -23,8 +22,10 @@ public class Product {
     private List<String> image_ids;
     private String description;
     private List<String> tags;
-    //@JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ToString.Exclude
+    @JsonBackReference
+    @ManyToOne
     @JoinColumn()
     private Category category;
 
