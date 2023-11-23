@@ -23,7 +23,6 @@ public class Product {
     private String description;
     private List<String> tags;
 
-    @ToString.Exclude
     @JsonBackReference
     @ManyToOne
     @JoinColumn()

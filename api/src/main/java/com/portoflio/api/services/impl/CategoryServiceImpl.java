@@ -71,18 +71,15 @@ public class CategoryServiceImpl implements CategoryService {
         return dtos;
     }
     @Override
-    public Set<Product>  delete(Long id){
+    public void  delete(Long id){
         Optional<Category> oCategory = categoryRepository.findById(id);
         if (oCategory.isPresent()) {
             Set<Product> products = oCategory.get().getProducts();
-            List<String> lista = new ArrayList<>();
             for(Product product: products){
                 product.setCategory(null);
-                productRepository.save(product);
-                lista.add("P");
+                //productRepository.save(product);
             }
-            return products;
-            //categoryRepository.delete(oCategory.get());
+            categoryRepository.delete(oCategory.get());
         } else {
             throw new NotFoundException("Category not found");
         }
