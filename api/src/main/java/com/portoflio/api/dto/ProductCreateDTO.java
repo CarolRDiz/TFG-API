@@ -21,5 +21,5 @@ public class ProductCreateDTO {
     private String description;
     private List<String> tags;
     private Boolean visibility;
-    private Long category_id;
+    private List<Long> category_ids;
 }

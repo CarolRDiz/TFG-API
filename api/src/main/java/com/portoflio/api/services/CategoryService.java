@@ -12,5 +12,5 @@ public interface CategoryService {
     CategoryDTO create (CategoryCreateDTO newCategory);
     List<CategoryDTO> findAll();
     void delete(Long id);
-    Category addProduct (Long id, Product product);
+
 }

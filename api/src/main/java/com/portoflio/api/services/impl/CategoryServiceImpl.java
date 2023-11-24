@@ -7,6 +7,7 @@ import com.portoflio.api.dto.CategoryDTO;
 import com.portoflio.api.exceptions.NotFoundException;
 import com.portoflio.api.models.Category;
 import com.portoflio.api.models.Product;
+import com.portoflio.api.models.ProductCategory;
 import com.portoflio.api.services.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     private ModelMapper mapper = new ModelMapper();
 
+    /*
     @Override
     public Category addProduct (Long id, Product product){
         Optional<Category> oCategory = categoryRepository.findById(id);
@@ -49,7 +51,7 @@ public class CategoryServiceImpl implements CategoryService {
             throw new NotFoundException("Category not found");
         }
     };
-
+*/
     public CategoryDTO create (CategoryCreateDTO newCategory){
         Optional<Category> oCategory = categoryRepository.findByName(newCategory.getName());
         if(oCategory.isPresent()){
@@ -70,18 +72,16 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList());
         return dtos;
     }
+
     @Override
     public void  delete(Long id){
         Optional<Category> oCategory = categoryRepository.findById(id);
         if (oCategory.isPresent()) {
-            Set<Product> products = oCategory.get().getProducts();
-            for(Product product: products){
-                product.setCategory(null);
-                //productRepository.save(product);
-            }
             categoryRepository.delete(oCategory.get());
         } else {
             throw new NotFoundException("Category not found");
         }
     }
+
+
 }

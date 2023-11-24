@@ -23,8 +23,8 @@ public class Category {
 
     @JsonBackReference
     @ToString.Exclude
-    @OneToMany(mappedBy = "category", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, orphanRemoval = false )
-    private Set<Product> products = new HashSet<Product>();
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private Set<ProductCategory> productCategories = new HashSet<ProductCategory>();
 
     public Category(String name) {
         this.name = name;

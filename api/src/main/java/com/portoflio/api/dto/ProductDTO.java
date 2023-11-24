@@ -1,6 +1,7 @@
 package com.portoflio.api.dto;
 
 import com.portoflio.api.models.Category;
+import com.portoflio.api.models.ProductCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Setter;
 import org.bson.types.Binary;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,5 +25,6 @@ public class ProductDTO {
     private String description;
     private List<String> tags;
     private Boolean visibility;
-    private Category category;
+    //private Category category;
+    private Set<ProductCategory> productCategories;
 }

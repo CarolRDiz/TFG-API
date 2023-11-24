@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -24,9 +26,9 @@ public class Product {
     private List<String> tags;
 
     @JsonBackReference
-    @ManyToOne
-    @JoinColumn()
-    private Category category;
+    @ToString.Exclude
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private Set<ProductCategory> productCategories = new HashSet<ProductCategory>();
 
     private Boolean visibility;
     public Product(Product product) {
@@ -35,7 +37,7 @@ public class Product {
         this.price =        product.getPrice();
         this.description =  product.getDescription();
         this.tags =         product.getTags();
-        this.category =     product.getCategory();
+        this.productCategories =     product.getProductCategories();
         this.visibility =   product.getVisibility();
     }
 }

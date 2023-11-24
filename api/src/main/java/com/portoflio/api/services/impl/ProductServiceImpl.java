@@ -13,6 +13,7 @@ import com.portoflio.api.models.Image;
 import com.portoflio.api.models.Product;
 import com.portoflio.api.services.CategoryService;
 import com.portoflio.api.services.ImageService;
+import com.portoflio.api.services.ProductCategoryService;
 import com.portoflio.api.services.ProductService;
 import com.portoflio.api.spec.ProductSpec;
 import org.bson.types.Binary;
@@ -38,6 +39,9 @@ public class ProductServiceImpl implements ProductService {
     CategoryRepository categoryRepository;
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    ProductCategoryService productCategoryService;
+
 
     private ModelMapper mapper = new ModelMapper();
     TypeMap<Product, Product> propertyMapper = this.mapper.createTypeMap(Product.class, Product.class);
@@ -46,6 +50,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO create(ProductCreateDTO newProduct) throws IOException {
         System.out.println("CREATE PRODUCT METHOD");
         Product product = this.mapper.map(newProduct, Product.class);
+        //AÑADIR LAS IMÁGENES
         if(newProduct.getImages()!=null){
             MultipartFile[] images = newProduct.getImages();
             List<String> image_ids = new ArrayList<>();
@@ -59,25 +64,32 @@ public class ProductServiceImpl implements ProductService {
             });
             product.setImage_ids(image_ids);
         }
-        if(newProduct.getCategory_id()!=null){
-            Optional<Category> oCategory = categoryRepository.findById(newProduct.getCategory_id());
-            if(oCategory.isPresent()){
-                System.out.println("CATEGORY FOUNDED:");
-                Category category = oCategory.get();
-                System.out.println(category);
+        product = repository.save(product);
 
-                product.setCategory(category);
-                product = repository.save(product);
-                System.out.println("PRODUCT SAVED");
-                System.out.println(product);
-                //Creamos la referencia al producto en la categoría
-                categoryService.addProduct(category.getId(), product);
-                ProductDTO dto = this.mapper.map(product, ProductDTO.class);
-                return dto;
+        if(newProduct.getCategory_ids().size()!=0){
+            //POR CADA CATEGORIA
+            for(Long category_id : newProduct.getCategory_ids()){
+                Optional<Category> oCategory = categoryRepository.findById(category_id);
+                if(oCategory.isPresent()){
+                    System.out.println("CATEGORY FOUNDED:");
+                    Category category = oCategory.get();
+                    System.out.println(category);
 
+                    //product.setCategory(category);
+                    //product = repository.save(product);
+                    //System.out.println("PRODUCT SAVED");
+                    //System.out.println(product);
+
+                    //Creamos la referencia al producto en la categoría
+                    //categoryService.addProduct(category.getId(), product);
+
+                    productCategoryService.create(product, category);
+
+                    //ProductDTO dto = this.mapper.map(product, ProductDTO.class);
+                    //return dto;
+                }
             }
         }
-        repository.save(product);
         ProductDTO dto = this.mapper.map(product, ProductDTO.class);
         return dto;
     }
