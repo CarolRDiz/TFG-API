@@ -19,7 +19,7 @@ public class ProductDTO {
     private Long id;
     private String name;
     //private String date;
-    private Double price;
+    private Float price;
     //private Binary image;
     private List<String> image_ids;
     private String description;

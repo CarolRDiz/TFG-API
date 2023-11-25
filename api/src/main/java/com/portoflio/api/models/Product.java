@@ -20,7 +20,7 @@ public class Product {
     private Long id;
     private String name;
     private String date;
-    private Double price;
+    private Float price;
     private List<String> image_ids;
     private String description;
     private List<String> tags;

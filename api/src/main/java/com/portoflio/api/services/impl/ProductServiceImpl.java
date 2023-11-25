@@ -23,9 +23,11 @@ import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -182,6 +184,32 @@ public class ProductServiceImpl implements ProductService {
             ProductDTO productDTO = this.mapper.map(oProduct.get(), ProductDTO.class);
             return productDTO;
         } else {
+            throw new NotFoundException("Product not found");
+        }
+    }
+    @Override
+    public ProductDTO updateProductByFields(Long id, Map<String, Object> fields){
+        System.out.println("updateProductByFields");
+        Optional<Product> product = repository.findById(id);
+        if(product.isPresent()){
+            fields.forEach((key,value) -> {
+                Field field = ReflectionUtils.findField(Product.class, key);
+                field.setAccessible(true);
+                if(key.equals("price")){
+                    System.out.println("price");
+                    System.out.println(value);
+                    Number price = (Number) value;
+                    Float priceFloat = price.floatValue();
+                    ReflectionUtils.setField(field, product.get(), priceFloat);
+                } else {
+                    ReflectionUtils.setField(field, product.get(), value);
+                }
+
+            });
+            repository.save(product.get());
+            return this.mapper.map(product.get(), ProductDTO.class);
+        }
+        else{
             throw new NotFoundException("Product not found");
         }
     }

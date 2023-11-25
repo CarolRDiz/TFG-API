@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
     ProductDTO create (ProductCreateDTO newProduct) throws IOException;
@@ -14,6 +15,7 @@ public interface ProductService {
     void delete (Long id);
     void deleteList (List<Long> ids);
     List<ProductDTO> findAll();
+    ProductDTO updateProductByFields(Long id, Map<String, Object> fields);
     List<ProductDTO> findFilter(String name, Double price);
     ProductDTO findById(Long id);
     ProductDTO addImage (Long id, MultipartFile image) throws IOException;
