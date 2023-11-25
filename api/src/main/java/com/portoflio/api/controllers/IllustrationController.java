@@ -87,7 +87,7 @@ public class IllustrationController {
     @RequestMapping(path = "/illustrations/{id}/", method = PATCH)
     public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody Map<String, Object> fields){
         try {
-            return new ResponseEntity<>(service.updateChapterByFields(id, fields), HttpStatus.OK);
+            return new ResponseEntity<>(service.updateIllustrationByFields(id, fields), HttpStatus.OK);
         } catch (NotFoundException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e){

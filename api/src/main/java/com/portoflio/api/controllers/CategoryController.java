@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
+import static org.springframework.web.bind.annotation.RequestMethod.PATCH;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @CrossOrigin(origins = "http://localhost:5173/", maxAge = 3600)
@@ -44,6 +47,17 @@ public class CategoryController {
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<>(httpStatus);
+    }
+    // UPDATE AN CATEGORY
+    @RequestMapping(path = "/categories/{id}/", method = PATCH)
+    public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody Map<String, Object> fields){
+        try {
+            return new ResponseEntity<>(bo.updateCategoryByFields(id, fields), HttpStatus.OK);
+        } catch (NotFoundException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

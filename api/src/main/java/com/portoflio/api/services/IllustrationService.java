@@ -18,5 +18,5 @@ public interface IllustrationService {
     IllustrationDTO updateImage (Long id, MultipartFile image) throws IOException;
     IllustrationDTO deleteImage (Long id);
 
-    IllustrationDTO updateChapterByFields(Long id, Map<String, Object> fields);
+    IllustrationDTO updateIllustrationByFields(Long id, Map<String, Object> fields);
 }

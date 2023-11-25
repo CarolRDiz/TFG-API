@@ -141,7 +141,7 @@ public class IllustrationServiceImpl implements IllustrationService {
         }
     };
     @Override
-    public IllustrationDTO updateChapterByFields(Long id, Map<String, Object> fields){
+    public IllustrationDTO updateIllustrationByFields(Long id, Map<String, Object> fields){
         /*
         Converter<String, Binary> binary = c -> imageService.getImage(c.getSource()).getImage();
         propertyMapper.addMappings(

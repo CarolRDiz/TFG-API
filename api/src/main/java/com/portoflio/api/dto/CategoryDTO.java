@@ -16,7 +16,7 @@ import java.util.Set;
 public class CategoryDTO {
     private Long id;
     private String name;
-    private Set<Product> products;
+    //private Set<Product> products;
     private Set<ProductCategory> productCategories;
 
 }

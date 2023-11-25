@@ -4,19 +4,20 @@ import com.portoflio.api.dao.CategoryRepository;
 import com.portoflio.api.dao.ProductRepository;
 import com.portoflio.api.dto.CategoryCreateDTO;
 import com.portoflio.api.dto.CategoryDTO;
+import com.portoflio.api.dto.IllustrationDTO;
 import com.portoflio.api.exceptions.NotFoundException;
 import com.portoflio.api.models.Category;
+import com.portoflio.api.models.Illustration;
 import com.portoflio.api.models.Product;
 import com.portoflio.api.models.ProductCategory;
 import com.portoflio.api.services.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.lang.reflect.Field;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -82,6 +83,21 @@ public class CategoryServiceImpl implements CategoryService {
             throw new NotFoundException("Category not found");
         }
     }
-
+    @Override
+    public CategoryDTO updateCategoryByFields(Long id, Map<String, Object> fields){
+        Optional<Category> category = categoryRepository.findById(id);
+        if(category.isPresent()){
+            fields.forEach((key,value) -> {
+                Field field = ReflectionUtils.findField(Category.class, key);
+                field.setAccessible(true);
+                ReflectionUtils.setField(field, category.get(), value);
+            });
+            categoryRepository.save(category.get());
+            return this.mapper.map(category.get(), CategoryDTO.class);
+        }
+        else{
+            throw new NotFoundException("Category not found");
+        }
+    }
 
 }
