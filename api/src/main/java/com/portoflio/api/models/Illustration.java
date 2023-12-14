@@ -22,6 +22,6 @@ public class Illustration {
     private String image_id;
     //private String date;
     private Boolean visibility;
-    private List<String> tags;
+    //private List<String> tags;
 
 }

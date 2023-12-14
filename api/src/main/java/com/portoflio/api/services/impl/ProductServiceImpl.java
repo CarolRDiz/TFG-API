@@ -196,8 +196,6 @@ public class ProductServiceImpl implements ProductService {
                 Field field = ReflectionUtils.findField(Product.class, key);
                 field.setAccessible(true);
                 if(key.equals("price")){
-                    System.out.println("price");
-                    System.out.println(value);
                     Number price = (Number) value;
                     Float priceFloat = price.floatValue();
                     ReflectionUtils.setField(field, product.get(), priceFloat);

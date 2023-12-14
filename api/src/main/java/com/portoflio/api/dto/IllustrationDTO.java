@@ -21,4 +21,5 @@ public class IllustrationDTO {
     //private Binary image;
     private String image_id;
     private Boolean visibility;
-    private List<String> tags;}
+    //private List<String> tags;
+}

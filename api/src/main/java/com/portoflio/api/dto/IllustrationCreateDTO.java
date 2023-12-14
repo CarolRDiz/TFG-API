@@ -15,6 +15,6 @@ public class IllustrationCreateDTO {
     private String description;
     //private String date;
     private MultipartFile image;
-    private List<String> tags;
+    //private List<String> tags;
     private Boolean visibility;
 }
