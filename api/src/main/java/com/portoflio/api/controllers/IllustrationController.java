@@ -20,7 +20,7 @@ import java.util.Map;
 import static org.springframework.web.bind.annotation.RequestMethod.PATCH;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-@CrossOrigin(origins = "http://localhost:5173/", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600)
 @RestController
 public class IllustrationController {
     @Autowired
@@ -71,6 +71,11 @@ public class IllustrationController {
         }
     }
 
+    // GET FILTERED ILLUSTRATIONS
+    @GetMapping("/illustrations/list")
+    public ResponseEntity<Object> indexFilter(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "visibility", required = false) Boolean visibility) {
+        return new ResponseEntity<>(service.findFilter(name,visibility), HttpStatus.OK);
+    }
 
     @RequestMapping(path = "/illustrations/delete/image/{id}/", method = PATCH)
     public ResponseEntity<Object> deleteImage(@PathVariable Long id){

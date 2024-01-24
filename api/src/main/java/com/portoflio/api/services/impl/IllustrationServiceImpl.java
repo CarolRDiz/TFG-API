@@ -9,11 +9,14 @@ import com.portoflio.api.models.Illustration;
 import com.portoflio.api.models.Product;
 import com.portoflio.api.services.IllustrationService;
 import com.portoflio.api.services.ImageService;
+import com.portoflio.api.spec.IllustrationSpec;
+import com.portoflio.api.spec.ProductSpec;
 import org.bson.types.Binary;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -160,5 +163,15 @@ public class IllustrationServiceImpl implements IllustrationService {
         else{
             throw new NotFoundException("Illustration not found");
         }
+    }
+    @Override
+    public List<IllustrationDTO> findFilter(String name, Boolean visibility){
+        Specification<Illustration> specification = IllustrationSpec.getSpec(name, visibility);
+        List<Illustration> illustrations = repository.findAll(specification);
+        List<IllustrationDTO> dtos = illustrations
+                .stream()
+                .map(illustration -> mapper.map(illustration, IllustrationDTO.class))
+                .collect(Collectors.toList());
+        return dtos;
     }
 }
