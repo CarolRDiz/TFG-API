@@ -14,7 +14,7 @@ import java.util.Map;
 import static org.springframework.web.bind.annotation.RequestMethod.PATCH;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-@CrossOrigin(origins = "http://localhost:5173/", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600)
 @RestController
 public class CategoryController {
 

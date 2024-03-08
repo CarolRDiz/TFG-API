@@ -9,4 +9,5 @@ import java.util.List;
 public interface ProductCategoryService {
     void create (Product product, Category category);
     List<ProductCategory> findAll();
+    void deleteSome (List<Long> ids);
 }

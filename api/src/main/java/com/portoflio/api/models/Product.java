@@ -22,6 +22,7 @@ public class Product {
     private String date;
     private Float price;
     private List<String> image_ids;
+    private String thumbnail_image_id;
     private String description;
     private List<String> tags;
 

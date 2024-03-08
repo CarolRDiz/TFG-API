@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
@@ -54,9 +55,21 @@ public class ProductServiceImpl implements ProductService {
         Product product = this.mapper.map(newProduct, Product.class);
         //AÑADIR LAS IMÁGENES
         if(newProduct.getImages()!=null){
-            MultipartFile[] images = newProduct.getImages();
+            List<MultipartFile> images = Arrays.asList(newProduct.getImages());
             List<String> image_ids = new ArrayList<>();
-            Arrays.asList(images).stream().forEach(file -> {
+            for (int i = 0; i < images.size(); i++) {
+               // String ranking = (i + 1) + ": " + images.get(i);
+                try{
+                    String image_id = imageService.addImage( newProduct.getName(), images.get(i));
+                    image_ids.add(image_id);
+                    if (i==newProduct.getThumbnail_index()){
+                        product.setThumbnail_image_id(image_id);
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            /*Arrays.asList(images).stream().forEach(file -> {
                 try {
                     String image_id = imageService.addImage( newProduct.getName(), file);
                     image_ids.add(image_id);
@@ -64,6 +77,7 @@ public class ProductServiceImpl implements ProductService {
                     throw new RuntimeException(e);
                 }
             });
+             */
             product.setImage_ids(image_ids);
         }
         product = repository.save(product);
@@ -139,6 +153,29 @@ public class ProductServiceImpl implements ProductService {
         }
     };
     @Override
+    public ProductDTO deleteImage (Long id, String imageId) {
+        Optional<Product> oProduct = repository.findById(id);
+        if (oProduct.isPresent()) {
+            Product product = oProduct.get();
+            imageService.deleteImage(imageId);
+            var images = product.getImage_ids();
+            List<String> filteredImages = new ArrayList<>(images);
+            filteredImages = images.stream()
+                    .filter(imgId -> !imgId.equals(imageId))
+                    .collect(Collectors.toList());
+            System.out.println(filteredImages);
+            product.setImage_ids(filteredImages);
+            if(product.getThumbnail_image_id().equals(imageId)){
+                product.setThumbnail_image_id(null);
+            }
+            repository.save(product);
+            ProductDTO productDTO = this.mapper.map(product, ProductDTO.class);
+            return productDTO;
+        } else {
+            throw new NotFoundException("Product not found");
+        }
+    };
+    @Override
     public void delete(Long id){
         Optional<Product> oProduct = repository.findById(id);
         if (oProduct.isPresent()) {
@@ -188,21 +225,61 @@ public class ProductServiceImpl implements ProductService {
         }
     }
     @Override
+    public Product getById(Long id) {
+        Optional<Product> oProduct = repository.findById(id);
+        if (oProduct.isPresent()) {
+            return oProduct.get();
+        } else {
+            throw new NotFoundException("Product not found");
+        }
+    }
+    @Override
+
     public ProductDTO updateProductByFields(Long id, Map<String, Object> fields){
         System.out.println("updateProductByFields");
         Optional<Product> product = repository.findById(id);
         if(product.isPresent()){
             fields.forEach((key,value) -> {
-                Field field = ReflectionUtils.findField(Product.class, key);
-                field.setAccessible(true);
-                if(key.equals("price")){
-                    Number price = (Number) value;
-                    Float priceFloat = price.floatValue();
-                    ReflectionUtils.setField(field, product.get(), priceFloat);
-                } else {
-                    ReflectionUtils.setField(field, product.get(), value);
-                }
+                if (key.equals("category_ids")) {
+                    List<Long> old_category_ids = product.get().getProductCategories().stream().map(relation -> relation.getCategory().getId()).collect(Collectors.toList());
+                    System.out.println(old_category_ids);
+                    if(old_category_ids.size()!=0){
+                        productCategoryService.deleteSome(old_category_ids);
+                    }
+                    System.out.println(value);
+                    List<Long> category_ids = (List<Long>) value;
+                    for (int i = 0; i < category_ids.size(); i++) {
+                        System.out.println ("El valor de la cifra es: " + i);
+                        System.out.println(category_ids);
+                        Long idLong = Long.parseLong(String.valueOf(category_ids.get(i)));
+                        System.out.println (idLong);
+                        Optional<Category> oCategory = categoryRepository.findById(idLong);
+                        if (oCategory.isPresent()) {
+                            productCategoryService.create(product.get(), oCategory.get());
+                        }
+                    }
+                    /*for(Long category_id : category_ids) {
 
+
+
+                        if (oCategory.isPresent()) {
+                            Category category = oCategory.get();
+                            productCategoryService.create(product.get(), category);
+                        }
+
+                    }*/
+                } else {
+                    Field field = ReflectionUtils.findField(Product.class, key);
+                    field.setAccessible(true);
+                    if(key.equals("price") && value!=null){
+                        Number price = (Number) value;
+                        Float priceFloat = price.floatValue();
+                        ReflectionUtils.setField(field, product.get(), priceFloat);
+                        System.out.println("END PRICE");
+                    } else {
+                        ReflectionUtils.setField(field, product.get(), value);
+                    }
+                }
             });
             repository.save(product.get());
             return this.mapper.map(product.get(), ProductDTO.class);

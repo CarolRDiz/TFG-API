@@ -18,6 +18,7 @@ public class ProductCreateDTO {
     //private String date;
     private Float price;
     private MultipartFile[] images;
+    private int thumbnail_index;
     private String description;
     private List<String> tags;
     private Boolean visibility;

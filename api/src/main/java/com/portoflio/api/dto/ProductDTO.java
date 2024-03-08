@@ -22,9 +22,9 @@ public class ProductDTO {
     private Float price;
     //private Binary image;
     private List<String> image_ids;
+    private String thumbnail_id;
     private String description;
     private List<String> tags;
     private Boolean visibility;
-    //private Category category;
     private Set<ProductCategory> productCategories;
 }

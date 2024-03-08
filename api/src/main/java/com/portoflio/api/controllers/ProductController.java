@@ -20,7 +20,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.PATCH;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173/", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600)
 public class ProductController {
     @Autowired
     ProductService service;
@@ -105,6 +105,18 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @RequestMapping(path = "/products/delete/image/{id}/{imageId}", method = PATCH)
+    public ResponseEntity<Object> deleteImage(@PathVariable Long id, @PathVariable String imageId){
+        try{
+            return new ResponseEntity<>(service.deleteImage(id, imageId),HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     // DELETE A PRODUCT
     @DeleteMapping("/products/{id}/")
     public ResponseEntity<Object> delete (@PathVariable("id") Long id) {
