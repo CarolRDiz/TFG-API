@@ -41,8 +41,16 @@ public class ProductController {
     public ResponseEntity<Object> index() {
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
     }
-    // GET FILTERED PRODUCTS
+
+    // GET LIST PRODUCTS
     @GetMapping("/products/list")
+    public ResponseEntity<Object> findList(@RequestParam(value = "ids", required = true) List<Long> ids) {
+        return new ResponseEntity<>(service.findList(ids), HttpStatus.OK);
+    }
+
+
+    // GET FILTERED PRODUCTS
+    @GetMapping("/products/filter")
     public ResponseEntity<Object> indexFilter(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "price", required = false) Double price) {
         return new ResponseEntity<>(service.findFilter(name,price), HttpStatus.OK);
     }

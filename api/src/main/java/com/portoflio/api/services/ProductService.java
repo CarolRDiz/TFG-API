@@ -22,4 +22,6 @@ public interface ProductService {
     ProductDTO findById(Long id);
     ProductDTO addImage (Long id, MultipartFile image) throws IOException;
     Product getById(Long id);
+    ProductDTO convertDTO (Product product);
+    List<ProductDTO> findList (List<Long> ids);
 }

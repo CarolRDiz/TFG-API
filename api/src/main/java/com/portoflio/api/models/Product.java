@@ -1,6 +1,7 @@
 package com.portoflio.api.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.portoflio.api.dto.ProductCreateDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class Product {
     private Float price;
     private List<String> image_ids;
     private String thumbnail_image_id;
+    @Column(length = 2048)
     private String description;
     private List<String> tags;
 
@@ -32,13 +34,26 @@ public class Product {
     private Set<ProductCategory> productCategories = new HashSet<ProductCategory>();
 
     private Boolean visibility;
-    public Product(Product product) {
+    public Product(ProductCreateDTO product) {
         this.name =         product.getName();
-        this.date =         product.getDate();
+        //this.date =         product.getDate();
         this.price =        product.getPrice();
         this.description =  product.getDescription();
         this.tags =         product.getTags();
-        this.productCategories =     product.getProductCategories();
+        //this.productCategories =     product.getProductCategories();
         this.visibility =   product.getVisibility();
+    }
+
+    public Product(Product product) {
+        this.name = product.getName();
+        //this.date = product.getDate();
+        this.price = product.getPrice();
+        //this.image_ids = product.getImage_ids();
+        this.thumbnail_image_id = product.getThumbnail_image_id();
+        this.description = product.getDescription();
+        this.tags = product.getTags();
+        //TODO
+        //this.productCategories = productCategories;
+        this.visibility = product.getVisibility();
     }
 }

@@ -26,5 +26,5 @@ public class ProductDTO {
     private String description;
     private List<String> tags;
     private Boolean visibility;
-    private Set<ProductCategory> productCategories;
+    private Set<Long> category_ids;
 }

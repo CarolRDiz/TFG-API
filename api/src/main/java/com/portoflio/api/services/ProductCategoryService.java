@@ -8,6 +8,9 @@ import java.util.List;
 
 public interface ProductCategoryService {
     void create (Product product, Category category);
+    void createList (Long product_id, List<Long> category_ids);
     List<ProductCategory> findAll();
-    void deleteSome (List<Long> ids);
+    void deleteSome (Long product_id, List<Long> category_ids);
+    void delete (Long id);
+
 }

@@ -64,9 +64,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
     public List<CategoryDTO> findAll(){
         List<Category> categories = categoryRepository.findAll();
-        System.out.println("FIND ALL CATEGORIES:");
-        System.out.println(categories);
-
         List<CategoryDTO> dtos = categories
                 .stream()
                 .map(category -> mapper.map(category, CategoryDTO.class))
