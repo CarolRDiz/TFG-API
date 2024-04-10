@@ -1,6 +1,5 @@
 package com.portoflio.api.controllers;
 
-import com.portoflio.api.dto.IllustrationCreateDTO;
 import com.portoflio.api.dto.ProductCreateDTO;
 import com.portoflio.api.exceptions.NotFoundException;
 import com.portoflio.api.services.ProductService;

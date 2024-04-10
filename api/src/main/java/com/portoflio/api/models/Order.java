@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -43,12 +45,13 @@ public class Order {
     private String city;
     private String postalCode;
     private String mobilePhone;
-    private String status;
+    private Integer shipped = 0;
     private String totalPrice;
 
+    private Date date;
 
     //    @Temporal(TemporalType.TIMESTAMP) - causes bug when saving...
-    private String created;
+    //private String created;
 
 
 

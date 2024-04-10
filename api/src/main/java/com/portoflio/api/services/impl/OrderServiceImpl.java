@@ -1,60 +1,75 @@
 package com.portoflio.api.services.impl;
 
 import com.portoflio.api.dao.OrderRepository;
+import com.portoflio.api.dao.ProductRepository;
+import com.portoflio.api.dto.OrderCreateDTO;
+import com.portoflio.api.dto.OrderDTO;
+import com.portoflio.api.exceptions.NotFoundException;
+import com.portoflio.api.models.Order;
+import com.portoflio.api.models.OrderItem;
+import com.portoflio.api.models.Product;
+import com.portoflio.api.services.OrderService;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public class OrderServiceImpl {
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Optional;
+
+@Service
+public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderRepository orderRepository;
+    @Autowired
+    ProductRepository productRepository;
+
+    private ModelMapper mapper = new ModelMapper();
+    TypeMap<Order, OrderDTO> propertyMapper = this.mapper.createTypeMap(Order.class, OrderDTO.class);
 
     @Override
-    public OrderResponse postOrder(PostOrderRequest postOrderRequest) {
-        // USUARIO
-        User user = userService.getUser();
-        // CARRITO DEL USUARIO
-        Cart cart = user.getCart();
-        if (Objects.isNull(cart) || Objects.isNull(cart.getCartItemList())) {
-            throw new InvalidArgumentException("Cart is not valid");
-        }
-
-        if (cart.getCartItemList().stream().anyMatch(cartItem -> cartItem.getProductVariant().getStock() < cartItem.getAmount())) {
-            throw new InvalidArgumentException("A product in your cart is out of stock.");
-        }
+    public OrderDTO postOrder(OrderCreateDTO postOrderRequest) {
 
         Order saveOrder = new Order();
-        saveOrder.setUser(user);
-        saveOrder.setShipName(postOrderRequest.getShipName());
-        saveOrder.setPhone(postOrderRequest.getPhone());
-        saveOrder.setShipAddress(postOrderRequest.getShipAddress());
-        saveOrder.setBillingAddress(postOrderRequest.getBillingAddress());
+        //saveOrder.setUser(user);
+        saveOrder.setFirstName(postOrderRequest.getFirstName());
+        saveOrder.setMobilePhone(postOrderRequest.getMobilePhone());
+        saveOrder.setAddress(postOrderRequest.getAddress());
+        saveOrder.setSecondAddress(postOrderRequest.getSecondAddress());
         saveOrder.setCity(postOrderRequest.getCity());
-        saveOrder.setCountry(postOrderRequest.getCountry());
-        saveOrder.setState(postOrderRequest.getState());
-        saveOrder.setZip(postOrderRequest.getZip());
+        saveOrder.setPostalCode(postOrderRequest.getPostalCode());
 
         Calendar calendar = Calendar.getInstance();
         Date date = calendar.getTime();
         saveOrder.setDate(date);
+        saveOrder.setItems(new ArrayList<>());
 
-        saveOrder.setOrderDetailList(new ArrayList<>());
         // POR CADA PRODUCTO SE CREA UN ORDERITEM
-        cart.getCartItemList().forEach(cartItem -> {
-            cartItem.getProductVariant().setSellCount(cartItem.getProductVariant().getSellCount() + cartItem.getAmount());
-            OrderDetail orderDetail = new OrderDetail();
-            orderDetail.setAmount(cartItem.getAmount());
-            orderDetail.setOrder(saveOrder);
-            orderDetail.setProductVariant(cartItem.getProductVariant());
-            saveOrder.getOrderDetailList().add(orderDetail);
+        postOrderRequest.getCartItems().forEach(cartItem -> {
+            Optional<Product> oProduct = productRepository.findById(cartItem.getProduct_id());
+            if (oProduct.isPresent()) {
+                Product product = oProduct.get();
+                product.setSellCount(product.getSellCount() + cartItem.getAmount());
+                OrderItem orderItem = new OrderItem();
+                orderItem.setAmount(cartItem.getAmount());
+                //orderItem.setOrder(saveOrder);
+                orderItem.setProduct(product);
+                saveOrder.getItems().add(orderItem);
+            } else {
+                throw new NotFoundException("Product not found");
+            }
         });
-
-        saveOrder.setTotalPrice(cart.getTotalPrice());
-        saveOrder.setTotalCargoPrice(cart.getTotalCargoPrice());
-        saveOrder.setDiscount(cart.getDiscount());
+        saveOrder.setTotalPrice(postOrderRequest.getTotalPrice());
+        //saveOrder.setTotalCargoPrice(cart.getTotalCargoPrice());
+        //saveOrder.setDiscount(cart.getDiscount());
         saveOrder.setShipped(0);
 
-
         Order order = orderRepository.save(saveOrder);
-        cartService.emptyCart();
-        return orderResponseConverter.apply(order);
+        //cartService.emptyCart();
+        OrderDTO dto = this.mapper.map(order, OrderDTO.class);
+        return dto;
     }
+
 }

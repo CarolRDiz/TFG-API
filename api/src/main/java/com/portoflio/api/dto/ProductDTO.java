@@ -27,4 +27,5 @@ public class ProductDTO {
     private List<String> tags;
     private Boolean visibility;
     private Set<Long> category_ids;
+    private Integer sellCount;
 }

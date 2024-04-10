@@ -27,6 +27,7 @@ public class Product {
     @Column(length = 2048)
     private String description;
     private List<String> tags;
+    private Integer sellCount = 0;
 
     @JsonBackReference
     @ToString.Exclude

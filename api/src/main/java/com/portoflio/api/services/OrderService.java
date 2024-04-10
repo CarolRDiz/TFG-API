@@ -1,4 +1,8 @@
 package com.portoflio.api.services;
 
-public class OrderService {
+import com.portoflio.api.dto.OrderCreateDTO;
+import com.portoflio.api.dto.OrderDTO;
+
+public interface OrderService {
+    OrderDTO postOrder(OrderCreateDTO postOrderRequest);
 }

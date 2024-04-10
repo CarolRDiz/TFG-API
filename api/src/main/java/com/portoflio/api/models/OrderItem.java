@@ -1,5 +1,6 @@
 package com.portoflio.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,8 +20,13 @@ public class OrderItem {
     private Long id;
     //private String price; ------------ no
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "order_id")
     private Order order;
 
+    @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
     /* Or
     @ManyToOne
