@@ -31,7 +31,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDTO postOrder(OrderCreateDTO postOrderRequest) {
-
+        System.out.println("POST ORDER METHOD");
+        System.out.println("new Order()");
+        /*
         Order saveOrder = new Order();
         //saveOrder.setUser(user);
         saveOrder.setFirstName(postOrderRequest.getFirstName());
@@ -45,9 +47,17 @@ public class OrderServiceImpl implements OrderService {
         Date date = calendar.getTime();
         saveOrder.setDate(date);
         saveOrder.setItems(new ArrayList<>());
+        */
+        Order saveOrder = this.mapper.map(postOrderRequest, Order.class);
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
+        saveOrder.setDate(date);
+        saveOrder.setItems(new ArrayList<>());
 
+        System.out.println("forEach");
         // POR CADA PRODUCTO SE CREA UN ORDERITEM
         postOrderRequest.getCartItems().forEach(cartItem -> {
+            System.out.println("findById product");
             Optional<Product> oProduct = productRepository.findById(cartItem.getProduct_id());
             if (oProduct.isPresent()) {
                 Product product = oProduct.get();
@@ -61,7 +71,6 @@ public class OrderServiceImpl implements OrderService {
                 throw new NotFoundException("Product not found");
             }
         });
-        saveOrder.setTotalPrice(postOrderRequest.getTotalPrice());
         //saveOrder.setTotalCargoPrice(cart.getTotalCargoPrice());
         //saveOrder.setDiscount(cart.getDiscount());
         saveOrder.setShipped(0);

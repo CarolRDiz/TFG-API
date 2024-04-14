@@ -19,9 +19,9 @@ public class OrderCreateDTO {
     private String secondAddress;
     private String city;
     private String postalCode;
-    private String mobilePhone;
-    private String status;
-    private String totalPrice;
+    private String phone;
+    //private String status;
+    private Integer totalPrice;
 
     //Cart ITEMS
     private List<CartItemDTO> cartItems;

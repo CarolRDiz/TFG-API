@@ -44,9 +44,9 @@ public class Order {
     private String secondAddress;
     private String city;
     private String postalCode;
-    private String mobilePhone;
+    private String phone;
     private Integer shipped = 0;
-    private String totalPrice;
+    private Integer totalPrice;
 
     private Date date;
 

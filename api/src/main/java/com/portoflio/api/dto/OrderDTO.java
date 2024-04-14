@@ -26,9 +26,8 @@ public class OrderDTO {
     private String secondAddress;
     private String city;
     private String postalCode;
-    private String mobilePhone;
-    private String status;
-    private String totalPrice;
+    private String phone;
+    private Integer totalPrice;
     private Date date;
     private Integer shipped;
 }
