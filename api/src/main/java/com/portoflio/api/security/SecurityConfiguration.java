@@ -1,4 +1,4 @@
-package com.portoflio.api.security;
+/*package com.portoflio.api.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,3 +11,5 @@ public class SecurityConfiguration {
         return (web) -> web.ignoring().anyRequest();
     }
 }
+
+ */
