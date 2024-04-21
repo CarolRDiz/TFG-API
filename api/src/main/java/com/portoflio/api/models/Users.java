@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 @Entity
 @Getter
@@ -36,13 +38,7 @@ public class Users{
         this.password = password;
         this.email = email;
     }
-    /*
-    public Users(RegistrationDTO newUsers) {
-        this.name       = newUsers.getName();
-        this.surname    = newUsers.getSurname();
-        this.email      = newUsers.getEmail();
-        this.password   = newUsers.getPassword();
-    }
-
- */
+    //TODO : CascadeType?
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Order> orders = new ArrayList<Order>();
 }

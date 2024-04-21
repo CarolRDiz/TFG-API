@@ -1,5 +1,6 @@
 package com.portoflio.api.dto;
 
+import com.portoflio.api.models.Order;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,14 +9,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-
+@Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor @Getter
-public class UserPrincipalDTO implements Serializable {
+@NoArgsConstructor
+public class UserPrincipalDTO {
     private String username;
     private String email;
     private String firstName;
@@ -28,5 +31,6 @@ public class UserPrincipalDTO implements Serializable {
     private LocalDateTime created;
     //private Set<Cart> carts;
     private boolean admin;
+    private List<Order> orders;
 
 }

@@ -1,13 +1,12 @@
 package com.portoflio.api.services.impl;
 import com.portoflio.api.dao.UsersRepository;
-import com.portoflio.api.dto.IllustrationDTO;
-import com.portoflio.api.dto.UserPrincipalDTO;
-import com.portoflio.api.dto.UsersDTO;
+import com.portoflio.api.dto.*;
 import com.portoflio.api.exceptions.NotFoundException;
-import com.portoflio.api.models.Illustration;
-import com.portoflio.api.models.Users;
+import com.portoflio.api.models.*;
 import com.portoflio.api.services.UsersService;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,12 +15,16 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UsersServiceImpl implements UsersService {
     @Autowired
     UsersRepository usersRepository;
     private ModelMapper mapper = new ModelMapper();
+    TypeMap<Users, UsersDTO> propertyMapper = this.mapper.createTypeMap(Users.class, UsersDTO.class);
+
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @Override
@@ -50,8 +53,15 @@ public class UsersServiceImpl implements UsersService {
     }
     @Override
     public UserPrincipalDTO getPrincipal(String email){
+        Converter<Set<Order>, Set<OrderDTO>> orderDtos = c -> c.getSource().stream().map(o -> this.mapper.map(o, OrderDTO.class)).collect(Collectors.toSet());
+        propertyMapper.addMappings(
+                mapper -> mapper.using(orderDtos).map(Users::getOrders, UsersDTO::setOrders)
+        );
+
+        System.out.println("getPrincipal");
         Optional<Users> oUser = usersRepository.findByEmail(email);
         if(oUser.isPresent()){
+            System.out.println("getPrincipal: isPresent");
             UserPrincipalDTO userDTO = this.mapper.map(oUser.get(), UserPrincipalDTO.class);
             return userDTO;
         }

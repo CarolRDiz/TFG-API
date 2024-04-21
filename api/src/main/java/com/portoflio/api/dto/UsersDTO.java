@@ -1,5 +1,6 @@
 package com.portoflio.api.dto;
 
+import com.portoflio.api.models.Order;
 import com.portoflio.api.models.Users;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Setter
@@ -28,6 +31,6 @@ public class UsersDTO implements Serializable {
     private LocalDateTime created;
     //private Set<Cart> carts;
     private boolean admin;
-
+    private List<Order> orders;
 
 }

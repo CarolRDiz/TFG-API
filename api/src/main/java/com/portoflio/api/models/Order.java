@@ -1,5 +1,6 @@
 package com.portoflio.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,12 +29,13 @@ public class Order {
     /*
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetailList;
+    */
 
-    @ManyToOne(optional = false)
+    @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id")
-    private User user;
+    private Users user;
 
-     */
 
     // CUSTOMER DETAILS
 
