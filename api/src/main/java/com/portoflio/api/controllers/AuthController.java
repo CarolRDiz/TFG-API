@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600)
 public class AuthController {
 
     private static final Logger LOG = LoggerFactory.getLogger(AuthController.class);
@@ -34,11 +35,17 @@ public class AuthController {
     }
     @PostMapping("/token")
     public String token(@RequestBody LoginRequestDTO loginRequest) {
+        System.out.println("AuthController: authenticationManager");
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginRequest.getUsername(),
+                //loginRequest.getUsername(),
+                loginRequest.getEmail(),
                 loginRequest.getPassword()
         ));
         LOG.debug("Token requested for user: '{}'", authentication.getName());
+        System.out.println("---------authentication------------");
+        System.out.println(authentication);
+        System.out.println(authentication.getName());
+
         String token = tokenService.generateToken(authentication);
         LOG.debug("Token granted: {}", token);
 

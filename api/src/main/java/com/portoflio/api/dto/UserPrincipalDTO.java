@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,11 +17,16 @@ import java.util.Set;
 @NoArgsConstructor @Getter
 public class UserPrincipalDTO implements Serializable {
     private String username;
-    private String name;
-    private String surname;
     private String email;
+    private String firstName;
+    private String lastName;
+    private String address;
+    private String secondAddress;
+    private String city;
+    private String postalCode;
+    private String phone;
+    private LocalDateTime created;
     //private Set<Cart> carts;
     private boolean admin;
-    //private Set<Course> createdCourses = new HashSet<>();
 
 }

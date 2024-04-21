@@ -19,10 +19,12 @@ public class Seeder implements CommandLineRunner {
     @Override
     public void run(String... args) {
         String pass = bCryptPasswordEncoder.encode("password");
-        Users testUser = new Users(1L,"carol", "apellido", pass, true);
-        Users testUser2 = new Users(2L,"noad","apellido", "{noop}password", false);
-        userRepository.save(testUser);
-        userRepository.save(testUser2);
+        //Users testUser = new Users(1L,"carol", "apellido", pass, true);
+        //Users testUser2 = new Users(2L,"noad","apellido", "{noop}password", false);
+        //Users testUser3 = new Users("a@gmail.com", "{noop}password", false);
+
+        //userRepository.save(testUser);
+        //userRepository.save(testUser2);
 
     }
 }

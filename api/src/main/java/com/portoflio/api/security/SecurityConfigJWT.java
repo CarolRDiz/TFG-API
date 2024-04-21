@@ -97,6 +97,12 @@ public class SecurityConfigJWT {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/swagger-ui/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/swagger**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/token").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/illustrations/**").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/products/").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/products/**").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/productCategories/**").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/categories/**").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/order/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/videos/stream/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/images/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/registration/**").permitAll())
@@ -151,7 +157,7 @@ public class SecurityConfigJWT {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
         configuration.setAllowedMethods(List.of("GET","POST","PATCH", "DELETE"));
         configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

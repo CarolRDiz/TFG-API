@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 
 @Setter
@@ -16,15 +17,17 @@ import java.io.Serializable;
 public class UsersDTO implements Serializable {
     private Long id;
     private String username;
-    private String name;
-    private String surname;
     private String email;
+    private String firstName;
+    private String lastName;
+    private String address;
+    private String secondAddress;
+    private String city;
+    private String postalCode;
+    private String phone;
+    private LocalDateTime created;
+    //private Set<Cart> carts;
+    private boolean admin;
 
-    public UsersDTO(Users users) {
-        this.id         = users.getId();
-        this.name       = users.getName();
-        this.surname    = users.getSurname();
-        this.email      = users.getEmail();
-    }
 
 }

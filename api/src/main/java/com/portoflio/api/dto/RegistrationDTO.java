@@ -12,6 +12,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegistrationDTO implements Serializable {
-    private String username;
+    //private String username;
+    private String email;
     private String password;
 }

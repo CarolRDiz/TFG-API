@@ -30,17 +30,19 @@ public class MyUserPrincipal implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        // return user.getUsername();
+        return user.getEmail();
     }
 
     public Long getId() {
         return user.getId();
     }
-    public String getName() {
-        return user.getName();
+    public String getFirstName() {
+        return user.getFirstName();
     }
-    public String getSurname() {
-        return user.getSurname();
+
+    public String getLastName() {
+        return user.getLastName();
     }
     public String getEmail() {return user.getEmail();}
 

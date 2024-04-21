@@ -19,29 +19,22 @@ public class Users{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
-    private String name;
-    private String surname;
     private String email;
+    private String firstName;
+    private String lastName;
+    private String address;
+    private String secondAddress;
+    private String city;
+    private String postalCode;
+    private String phone;
     private String password;
     private LocalDateTime created;
     private boolean admin;
 
-
-    public Users(String username, String name, String surname, String email, String password, boolean admin) {
-        this.username = username;
-        this.name       = name;
-        this.surname    = surname;
-        this.email      = email;
-        this.password   = password;
+    public Users(String email, String password, boolean admin ) {
         this.admin = admin;
-    }
-
-    public Users(Long id, String username, String surname, String password, boolean admin) {
-        this.id = id;
-        this.username = username;
-        this.surname    = surname;
         this.password = password;
-        this.admin = admin;
+        this.email = email;
     }
     /*
     public Users(RegistrationDTO newUsers) {
