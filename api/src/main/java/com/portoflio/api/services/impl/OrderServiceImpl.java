@@ -7,6 +7,7 @@ import com.portoflio.api.dao.UsersRepository;
 import com.portoflio.api.dto.IllustrationDTO;
 import com.portoflio.api.dto.OrderCreateDTO;
 import com.portoflio.api.dto.OrderDTO;
+import com.portoflio.api.dto.ProductDTO;
 import com.portoflio.api.exceptions.NotFoundException;
 import com.portoflio.api.models.Order;
 import com.portoflio.api.models.OrderItem;
@@ -17,7 +18,9 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,6 +37,37 @@ public class OrderServiceImpl implements OrderService {
 
     private ModelMapper mapper = new ModelMapper();
     TypeMap<Order, OrderDTO> propertyMapper = this.mapper.createTypeMap(Order.class, OrderDTO.class);
+
+    @Override
+    public void update(Long id, Map<String, Object> fields) {
+        Optional<Order> oOrder = orderRepository.findById(id);
+        if (oOrder.isPresent()) {
+            fields.forEach((key,value) -> {
+                Field field = ReflectionUtils.findField(Order.class, key);
+                field.setAccessible(true);
+                ReflectionUtils.setField(field, oOrder.get(), value);
+            });
+            orderRepository.save(oOrder.get());
+        } else {
+            throw new NotFoundException("Order not found");
+        }
+    };
+    @Override
+    public void updateOrdersStatus(List<Long> ids, Map<String, Object> fields) {
+        ids.forEach((id) -> {
+            Optional<Order> oOrder = orderRepository.findById(id);
+            if (oOrder.isPresent()) {
+                fields.forEach((key,value) -> {
+                    Field field = ReflectionUtils.findField(Order.class, key);
+                    field.setAccessible(true);
+                    ReflectionUtils.setField(field, oOrder.get(), value);
+                });
+                orderRepository.save(oOrder.get());
+            } else {
+                throw new NotFoundException("Order not found");
+            }
+        });
+    }
 
     @Override
     public List<OrderDTO> findAll() {

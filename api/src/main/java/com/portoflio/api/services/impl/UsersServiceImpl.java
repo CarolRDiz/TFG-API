@@ -28,7 +28,7 @@ public class UsersServiceImpl implements UsersService {
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @Override
-    public String signUpUser (Users newUser){
+    public void signUpUser (Users newUser){
         //boolean userExists = usersRepository.findByUsername(newUser.getUsername()).isPresent();
         boolean userExists = usersRepository.findByEmail(newUser.getEmail()).isPresent();
         if (userExists){
@@ -37,7 +37,6 @@ public class UsersServiceImpl implements UsersService {
         String encodedPassword = bCryptPasswordEncoder.encode(newUser.getPassword());
         newUser.setPassword(encodedPassword);
         usersRepository.save(newUser);
-        return "it works";
     }
 
     @Override

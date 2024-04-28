@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600)
@@ -47,6 +49,28 @@ public class OrderController {
             return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @PatchMapping("/order/{id}")
+    public ResponseEntity<Object> updateOrder(@PathVariable("id") Long id, @RequestBody Map<String, Object> fields) {
+        try {
+            service.update(id, fields);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PatchMapping("/order/list")
+    public ResponseEntity<Object> updateOrder(@RequestParam("ids") List<Long> ids, @RequestBody Map<String, Object> fields) {
+        try {
+            service.updateOrdersStatus(ids, fields);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

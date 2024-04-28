@@ -170,6 +170,7 @@ public class ProductServiceImpl implements ProductService {
     public void delete(Long id){
         Optional<Product> oProduct = repository.findById(id);
         if (oProduct.isPresent()) {
+            //TODO: borrar imagenes
             repository.delete(oProduct.get());
         } else {
             throw new NotFoundException("Product not found");

@@ -17,7 +17,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private ModelMapper mapper = new ModelMapper();
     @Override
-    public String register (RegistrationDTO newUser){
+    public void register (RegistrationDTO newUser){
         //boolean isValidUsername = usernameValidator.test(newUser.getUsername());
         boolean isValidEmail = usernameValidator.test(newUser.getEmail());
         /*
@@ -27,7 +27,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
          */
         Users user = this.mapper.map(newUser, Users.class);
-        return usersService.signUpUser(
+        usersService.signUpUser(
                 user
         );
     }

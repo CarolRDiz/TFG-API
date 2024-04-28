@@ -16,8 +16,14 @@ public class RegistrationController {
 
     @PostMapping("/registration/")
     public ResponseEntity<Object> register(@RequestBody RegistrationDTO newUser) {
-        return new ResponseEntity<>(
-                registrationService.register(newUser),
-                HttpStatus.OK);
+        try {
+            registrationService.register(newUser);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 }

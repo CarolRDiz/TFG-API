@@ -12,5 +12,5 @@ public interface UsersService  extends Serializable {
     UserPrincipalDTO getPrincipal(String username);
     UserPrincipalDTO updateByFields (String email, Map<String, Object> fields);
     void delete(Long id);
-    String signUpUser (Users newUser);
+    void signUpUser (Users newUser);
 }
