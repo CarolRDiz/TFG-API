@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.ui.Model;
@@ -29,6 +30,7 @@ public class IllustrationController {
 
     // GET AN ILLUSTRATION
     @GetMapping("/illustrations/{id}/")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> show(@PathVariable("id")Long id) {
         try {
             return new ResponseEntity<>(service.findById(id),HttpStatus.OK);
@@ -41,6 +43,7 @@ public class IllustrationController {
 
     // GET ALL ILLUSTRATIONS
     @GetMapping("/illustrations/")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> index() {
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
     }
@@ -53,12 +56,14 @@ public class IllustrationController {
 
     // POST AN ILLUSTRATION
     @RequestMapping(path = "/illustrations/", method = POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> create (@ModelAttribute IllustrationCreateDTO newIllustration) throws IOException {
         return new ResponseEntity<>(service.create(newIllustration),HttpStatus.CREATED);
     }
 
     // UPDATE IMAGE FROM ILLUSTRATION
     @RequestMapping(path = "/illustrations/image/{id}/", method = PATCH, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> updateImage(@PathVariable Long id, @RequestParam("image") MultipartFile image, Model model){
         try{
             return new ResponseEntity<>(service.updateImage(id, image),HttpStatus.OK);
@@ -73,11 +78,13 @@ public class IllustrationController {
 
     // GET FILTERED ILLUSTRATIONS
     @GetMapping("/illustrations/list")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> indexFilter(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "visibility", required = false) Boolean visibility) {
         return new ResponseEntity<>(service.findFilter(name,visibility), HttpStatus.OK);
     }
 
     @RequestMapping(path = "/illustrations/delete/image/{id}/", method = PATCH)
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> deleteImage(@PathVariable Long id){
         try{
             return new ResponseEntity<>(service.deleteImage(id),HttpStatus.OK);
@@ -90,6 +97,7 @@ public class IllustrationController {
 
     // UPDATE AN ILLUSTRATION
     @RequestMapping(path = "/illustrations/{id}/", method = PATCH)
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody Map<String, Object> fields){
         try {
             return new ResponseEntity<>(service.updateIllustrationByFields(id, fields), HttpStatus.OK);
@@ -102,6 +110,7 @@ public class IllustrationController {
 
     // DELETE AN ILLUSTRATION
     @DeleteMapping("/illustrations/{id}/")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> delete (@PathVariable("id") Long id) {
         HttpStatus httpStatus;
         try {
@@ -116,6 +125,7 @@ public class IllustrationController {
     }
     // DELETE SOME ILLUSTRATIONS
     @DeleteMapping("/illustrations/")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> deleteList (@RequestParam("ids") List<Long> ids) {
         HttpStatus httpStatus;
         try {

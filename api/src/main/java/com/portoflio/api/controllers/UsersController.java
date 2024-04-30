@@ -9,6 +9,7 @@ import com.portoflio.api.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -26,12 +27,14 @@ public class UsersController {
     UsersService usersService;
 
     @GetMapping("/users/")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> index() {
         return new ResponseEntity<>(usersRepository.findAll(), HttpStatus.OK);
     }
 
 
     @GetMapping("/users/{id}/")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<UsersDTO> show(@PathVariable("id") Long id) {
         final UsersDTO usersDTO = usersService.findById(id);
         if (usersDTO ==  null){
@@ -47,6 +50,7 @@ public class UsersController {
     }
 
     @DeleteMapping("/users/{id}/")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
         Optional<Users> user = usersRepository.findById(id);
         if(user.isPresent()) {
@@ -57,18 +61,7 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
-
-    @PutMapping("/users/{id}/")
-    public ResponseEntity<Object> update(@PathVariable("id") Long id, @RequestBody Users users) {
-        Optional<Users> oldUser = usersRepository.findById(id);
-        if(oldUser.isPresent()) {
-            //prisoner.setId(id);
-            usersRepository.save(users);
-            return new ResponseEntity<>(users, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
-    }
-    // UPDATE AN ILLUSTRATION
+    // UPDATE USER
     @RequestMapping(path = "/users/", method = PATCH)
     public ResponseEntity<Object> update(Principal principal, @RequestBody Map<String, Object> fields){
         try {

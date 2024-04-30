@@ -21,8 +21,8 @@ public class CategoryController {
     @Autowired
     CategoryService bo;
 
-    //@PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     @RequestMapping(path = "/categories/", method = POST)
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> create(@RequestBody CategoryCreateDTO newCategory){
         try {
             return new ResponseEntity<>(bo.create(newCategory), HttpStatus.CREATED);
@@ -36,6 +36,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/categories/{id}/")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> delete(@PathVariable Long id) {
         HttpStatus httpStatus;
         try {
@@ -50,6 +51,7 @@ public class CategoryController {
     }
     // UPDATE AN CATEGORY
     @RequestMapping(path = "/categories/{id}/", method = PATCH)
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody Map<String, Object> fields){
         try {
             return new ResponseEntity<>(bo.updateCategoryByFields(id, fields), HttpStatus.OK);

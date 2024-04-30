@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,7 @@ public class ProductCategoryController {
     ProductCategoryService service;
     // GET ALL PRODUCTS
     @GetMapping("/productCategories/")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> index() {
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
     }
@@ -46,6 +48,7 @@ public class ProductCategoryController {
 
      */
     @PostMapping("/productCategories/{product_id}")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> createList(@PathVariable Long product_id, @RequestParam("category_ids") List<Long> category_ids) {
         HttpStatus httpStatus;
         try {
@@ -59,6 +62,7 @@ public class ProductCategoryController {
         return new ResponseEntity<>(httpStatus);
     }
     @DeleteMapping("/productCategories/{product_id}")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> deleteList(@PathVariable Long product_id, @RequestParam("category_ids") List<Long> category_ids) {
         HttpStatus httpStatus;
         try {

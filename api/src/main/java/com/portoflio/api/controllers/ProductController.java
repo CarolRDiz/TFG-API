@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +27,7 @@ public class ProductController {
 
     // GET A PRODUCT
     @GetMapping("/products/{id}/")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> show(@PathVariable("id")Long id) {
         try {
             return new ResponseEntity<>(service.findById(id),HttpStatus.OK);
@@ -35,14 +37,19 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    //TODO: get Public Product
+    //TODO: get All Public Products
+
     // GET ALL PRODUCTS
     @GetMapping("/products/")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> index() {
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
     }
 
     // GET LIST PRODUCTS
     @GetMapping("/products/list")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> findList(@RequestParam(value = "ids", required = true) List<Long> ids) {
         return new ResponseEntity<>(service.findList(ids), HttpStatus.OK);
     }
@@ -50,11 +57,15 @@ public class ProductController {
 
     // GET FILTERED PRODUCTS
     @GetMapping("/products/filter")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+
     public ResponseEntity<Object> indexFilter(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "price", required = false) Double price) {
         return new ResponseEntity<>(service.findFilter(name,price), HttpStatus.OK);
     }
     // POST A PRODUCT
     @RequestMapping(path = "/products/", method = POST,  consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+
     public ResponseEntity<Object> create(@ModelAttribute ProductCreateDTO newProduct) throws IOException {
         try {
             return new ResponseEntity<>(service.create(newProduct), HttpStatus.CREATED);
@@ -65,6 +76,7 @@ public class ProductController {
     }
     // DUPLICATE A PRODUCT
     @RequestMapping(path = "/products/duplicate/{id}/", method = POST)
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> duplicate(@PathVariable Long id) {
         try {
             return new ResponseEntity<>(service.duplicate(id), HttpStatus.CREATED);
@@ -90,6 +102,7 @@ public class ProductController {
 
     // UPDATE AN PRODUCT
     @RequestMapping(path = "/products/{id}/", method = PATCH)
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody Map<String, Object> fields){
         try {
             return new ResponseEntity<>(service.updateProductByFields(id, fields), HttpStatus.OK);
@@ -101,6 +114,7 @@ public class ProductController {
     }
     // UPDATE IMAGE FROM Product
     @RequestMapping(path = "/products/image/{id}/", method = PATCH, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> updateImage(@PathVariable Long id, @RequestParam("image") MultipartFile image, Model model){
         try{
             return new ResponseEntity<>(service.addImage(id, image),HttpStatus.OK);
@@ -114,6 +128,7 @@ public class ProductController {
     }
 
     @RequestMapping(path = "/products/delete/image/{id}/{imageId}", method = PATCH)
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> deleteImage(@PathVariable Long id, @PathVariable String imageId){
         try{
             return new ResponseEntity<>(service.deleteImage(id, imageId),HttpStatus.OK);
@@ -126,6 +141,7 @@ public class ProductController {
 
     // DELETE A PRODUCT
     @DeleteMapping("/products/{id}/")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> delete (@PathVariable("id") Long id) {
         HttpStatus httpStatus;
         try {
@@ -140,6 +156,7 @@ public class ProductController {
     }
     // DELETE SOME PRODUCTS
     @DeleteMapping("/products/")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> deleteList (@RequestParam("ids") List<Long> ids) {
         HttpStatus httpStatus;
         try {

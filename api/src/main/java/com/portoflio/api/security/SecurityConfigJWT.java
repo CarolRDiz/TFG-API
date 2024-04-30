@@ -62,6 +62,7 @@ public class SecurityConfigJWT {
         authProvider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(authProvider);
     }
+    /*
     @Bean
     public UserDetailsService users() {
         return new InMemoryUserDetailsManager(
@@ -71,6 +72,8 @@ public class SecurityConfigJWT {
                         .build()
         );
     }
+     */
+
     /*
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -93,14 +96,31 @@ public class SecurityConfigJWT {
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll())
                 // you can authorize/authenticate requests based on roles by matcher (regular expression)
                 //.authorizeHttpRequests(auth -> auth.requestMatchers("/prisoners/**").hasAuthority("SCOPE_ADMIN"))
+
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/v3/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/swagger-ui/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/swagger**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/token").permitAll())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/illustrations/**").permitAll())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/products/**").permitAll())
+                //ILLUSTRATIONS
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST,"/illustrations/**").hasAuthority("SCOPE_ADMIN"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.PATCH,"/illustrations/**").hasAuthority("SCOPE_ADMIN"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.PUT,"/illustrations/**").hasAuthority("SCOPE_ADMIN"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.DELETE,"/illustrations/**").hasAuthority("SCOPE_ADMIN"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/illustrations/**").permitAll())
+                //PRODUCTS
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST,"/products/**").hasAuthority("SCOPE_ADMIN"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.PATCH,"/products/**").hasAuthority("SCOPE_ADMIN"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.PUT,"/products/**").hasAuthority("SCOPE_ADMIN"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.DELETE,"/products/**").hasAuthority("SCOPE_ADMIN"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/products/**").permitAll())
+                //CATEGORIES
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST,"/categories/**").hasAuthority("SCOPE_ADMIN"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.PATCH,"/categories/**").hasAuthority("SCOPE_ADMIN"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.PUT,"/categories/**").hasAuthority("SCOPE_ADMIN"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.DELETE,"/categories/**").hasAuthority("SCOPE_ADMIN"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/categories/**").permitAll())
+
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/productCategories/**").permitAll())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/categories/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/order/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/orderItems/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/videos/stream/**").permitAll())
