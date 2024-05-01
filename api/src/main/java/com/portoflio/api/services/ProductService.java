@@ -18,7 +18,7 @@ public interface ProductService {
     ProductDTO deleteImage (Long id, String imageId);
     List<ProductDTO> findAll();
     ProductDTO updateProductByFields(Long id, Map<String, Object> fields);
-    List<ProductDTO> findFilter(String name, Double price, Boolean visibility);
+    List<ProductDTO> findFilter(String name, String category_name);
     ProductDTO findById(Long id);
     ProductDTO findByIdPublic(Long id);
     ProductDTO addImage (Long id, MultipartFile image) throws IOException;

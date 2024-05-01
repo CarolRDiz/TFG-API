@@ -67,8 +67,8 @@ public class ProductController {
 
     // GET FILTERED PRODUCTS
     @GetMapping("/products/filter")
-    public ResponseEntity<Object> indexFilter(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "price", required = false) Double price, @RequestParam(value = "visibility", required = false) Boolean visibility) {
-        return new ResponseEntity<>(service.findFilter(name,price, visibility), HttpStatus.OK);
+    public ResponseEntity<Object> indexFilter(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "category", required = false) String category) {
+        return new ResponseEntity<>(service.findFilter(name,category), HttpStatus.OK);
     }
 
     // POST A PRODUCT

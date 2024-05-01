@@ -197,8 +197,8 @@ public class ProductServiceImpl implements ProductService {
         return dtos;
     }
     @Override
-    public List<ProductDTO> findFilter(String name, Double price, Boolean visibility){
-        Specification<Product> specification = ProductSpec.getSpec(name, price, visibility);
+    public List<ProductDTO> findFilter(String name, String category_name){
+        Specification<Product> specification = ProductSpec.getSpec(name, category_name);
         List<Product> products = repository.findAll(specification);
         List<ProductDTO> dtos = products
                 .stream()

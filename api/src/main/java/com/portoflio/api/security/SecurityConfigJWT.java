@@ -120,7 +120,8 @@ public class SecurityConfigJWT {
                 Long id = Long.valueOf(object.getVariables().get("id"));
                 Optional<Product> oProduct = productRepository.findById(id);
                 if (oProduct.isPresent()) {
-                    if (!admin && oProduct.get().getVisibility() == false) return new AuthorizationDecision(false);
+                    System.out.println(oProduct.get().getVisibility() == false);
+                    if (admin==false && oProduct.get().getVisibility() == false) return new AuthorizationDecision(false);
                     return new AuthorizationDecision(true);
                 } return new AuthorizationDecision(false);
 
@@ -156,7 +157,7 @@ public class SecurityConfigJWT {
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.PATCH,"/products/**").hasAuthority("SCOPE_ADMIN"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.PUT,"/products/**").hasAuthority("SCOPE_ADMIN"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.DELETE,"/products/**").hasAuthority("SCOPE_ADMIN"))
-                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/products/{id}/**").access(productAuthManager()))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/products/{id}/").access(productAuthManager()))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/products/**").permitAll())
                 //CATEGORIES
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST,"/categories/**").hasAuthority("SCOPE_ADMIN"))
