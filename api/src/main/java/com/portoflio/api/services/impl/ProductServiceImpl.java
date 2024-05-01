@@ -197,8 +197,8 @@ public class ProductServiceImpl implements ProductService {
         return dtos;
     }
     @Override
-    public List<ProductDTO> findFilter(String name, Double price){
-        Specification<Product> specification = ProductSpec.getSpec(name, price);
+    public List<ProductDTO> findFilter(String name, Double price, Boolean visibility){
+        Specification<Product> specification = ProductSpec.getSpec(name, price, visibility);
         List<Product> products = repository.findAll(specification);
         List<ProductDTO> dtos = products
                 .stream()
@@ -211,6 +211,17 @@ public class ProductServiceImpl implements ProductService {
         System.out.println("findById");
 
         Optional<Product> oProduct = repository.findById(id);
+        if (oProduct.isPresent()) {
+            System.out.println("product is present");
+            ProductDTO dto = this.convertDTO(oProduct.get());
+            return dto;
+        } else {
+            throw new NotFoundException("Product not found");
+        }
+    }
+    @Override
+    public ProductDTO findByIdPublic(Long id) {
+        Optional<Product> oProduct = repository.findByIdAndVisibilityTrue(id);
         if (oProduct.isPresent()) {
             System.out.println("product is present");
             ProductDTO dto = this.convertDTO(oProduct.get());

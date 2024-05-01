@@ -7,6 +7,9 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.portoflio.api.config.RsaKeyProperties;
+import com.portoflio.api.dao.ProductRepository;
+import com.portoflio.api.models.Product;
+import com.portoflio.api.security.guards.ProductAuthorizationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +20,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authorization.AuthorizationDecision;
+import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -25,6 +30,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -38,12 +45,16 @@ import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthen
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
 
+import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasAuthority;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 
@@ -55,6 +66,9 @@ public class SecurityConfigJWT {
     @Qualifier("myUserDetailsService")
     MyUserDetailsService myUserDetailsService;
 
+    @Autowired
+    ProductRepository productRepository;
+
     @Bean
     public AuthenticationManager authenticationManager(MyUserDetailsService myUserDetailsService) {
         var authProvider = new DaoAuthenticationProvider();
@@ -62,6 +76,8 @@ public class SecurityConfigJWT {
         authProvider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(authProvider);
     }
+
+    private ProductAuthorizationManager productAuthorizationManager;
     /*
     @Bean
     public UserDetailsService users() {
@@ -83,6 +99,34 @@ public class SecurityConfigJWT {
     private final RsaKeyProperties jwtConfigProperties;
     public SecurityConfigJWT(RsaKeyProperties jwtConfigProperties) {
         this.jwtConfigProperties = jwtConfigProperties;
+    }
+
+    AuthorizationManager<RequestAuthorizationContext> productAuthManager() {
+        return new AuthorizationManager<RequestAuthorizationContext>() {
+            @Override
+            public AuthorizationDecision check(Supplier<Authentication> authentication, RequestAuthorizationContext object) {
+                System.out.println("----AuthorizationManager");
+                System.out.println("getAuthorities: "+ authentication.get().getAuthorities().toString());
+                System.out.println("Parameter id: ");
+                System.out.println(object.getVariables().get("id"));
+                boolean admin = false;
+                //return new AuthorizationDecision(true);
+                for (final GrantedAuthority ga : authentication.get().getAuthorities()) {
+                    if (ga.getAuthority().equals("SCOPE_ADMIN")) {
+                        admin = true;
+                    }
+                }
+                System.out.println(admin);
+                Long id = Long.valueOf(object.getVariables().get("id"));
+                Optional<Product> oProduct = productRepository.findById(id);
+                if (oProduct.isPresent()) {
+                    if (!admin && oProduct.get().getVisibility() == false) return new AuthorizationDecision(false);
+                    return new AuthorizationDecision(true);
+                } return new AuthorizationDecision(false);
+
+
+            }
+        };
     }
 
     @Bean
@@ -112,6 +156,7 @@ public class SecurityConfigJWT {
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.PATCH,"/products/**").hasAuthority("SCOPE_ADMIN"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.PUT,"/products/**").hasAuthority("SCOPE_ADMIN"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.DELETE,"/products/**").hasAuthority("SCOPE_ADMIN"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/products/{id}/**").access(productAuthManager()))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/products/**").permitAll())
                 //CATEGORIES
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST,"/categories/**").hasAuthority("SCOPE_ADMIN"))

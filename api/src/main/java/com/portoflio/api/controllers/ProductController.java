@@ -27,7 +27,7 @@ public class ProductController {
 
     // GET A PRODUCT
     @GetMapping("/products/{id}/")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    //@PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> show(@PathVariable("id")Long id) {
         try {
             return new ResponseEntity<>(service.findById(id),HttpStatus.OK);
@@ -37,19 +37,29 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    //TODO: get Public Product
-    //TODO: get All Public Products
+
+    /*
+    // GET A PRODUCT
+    @GetMapping("/products/public/{id}/")
+    public ResponseEntity<Object> showPublicProduct(@PathVariable("id")Long id) {
+        try {
+            return new ResponseEntity<>(service.findByIdPublic(id),HttpStatus.OK);
+        } catch (NotFoundException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+     */
 
     // GET ALL PRODUCTS
     @GetMapping("/products/")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> index() {
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
     }
 
     // GET LIST PRODUCTS
     @GetMapping("/products/list")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> findList(@RequestParam(value = "ids", required = true) List<Long> ids) {
         return new ResponseEntity<>(service.findList(ids), HttpStatus.OK);
     }
@@ -57,11 +67,10 @@ public class ProductController {
 
     // GET FILTERED PRODUCTS
     @GetMapping("/products/filter")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
-
-    public ResponseEntity<Object> indexFilter(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "price", required = false) Double price) {
-        return new ResponseEntity<>(service.findFilter(name,price), HttpStatus.OK);
+    public ResponseEntity<Object> indexFilter(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "price", required = false) Double price, @RequestParam(value = "visibility", required = false) Boolean visibility) {
+        return new ResponseEntity<>(service.findFilter(name,price, visibility), HttpStatus.OK);
     }
+
     // POST A PRODUCT
     @RequestMapping(path = "/products/", method = POST,  consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
