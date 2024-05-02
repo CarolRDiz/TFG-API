@@ -134,7 +134,7 @@ public class SecurityConfigJWT {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 //.cors().configurationSource(corsConfigurationSource()).and()
-                .cors(Customizer.withDefaults())
+                //.cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .userDetailsService(myUserDetailsService)
                 // authorization of preflight requests (OPTIONS)
@@ -146,6 +146,8 @@ public class SecurityConfigJWT {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/swagger-ui/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/swagger**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/token").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/registration/").permitAll())
+
                 //ILLUSTRATIONS
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST,"/illustrations/**").hasAuthority("SCOPE_ADMIN"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.PATCH,"/illustrations/**").hasAuthority("SCOPE_ADMIN"))
@@ -171,7 +173,6 @@ public class SecurityConfigJWT {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/orderItems/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/videos/stream/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/images/**").permitAll())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/registration/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
