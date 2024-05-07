@@ -1,13 +1,10 @@
 package com.portoflio.api.dto;
 
 import com.portoflio.api.models.OrderItem;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDTO {
-
     private Long id;
     private List<OrderItem> items;
     private String email;

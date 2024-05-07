@@ -1,10 +1,8 @@
 package com.portoflio.api.spec;
 
 import com.portoflio.api.models.Illustration;
-import com.portoflio.api.models.Product;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
-
 import java.util.ArrayList;
 import java.util.List;
 

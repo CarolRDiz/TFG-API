@@ -1,11 +1,9 @@
 package com.portoflio.api.services;
 
-import com.portoflio.api.dto.IllustrationDTO;
 import com.portoflio.api.dto.ProductCreateDTO;
 import com.portoflio.api.dto.ProductDTO;
 import com.portoflio.api.models.Product;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;

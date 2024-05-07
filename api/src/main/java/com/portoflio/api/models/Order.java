@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,11 +24,6 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> items = new ArrayList<OrderItem>();
 
-    /*
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderDetail> orderDetailList;
-    */
-
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "user_id")
@@ -38,7 +31,6 @@ public class Order {
 
 
     // CUSTOMER DETAILS
-
     private String email;
     private String firstName;
     private String lastName;
@@ -49,66 +41,5 @@ public class Order {
     private String phone;
     private Integer shipped = 0;
     private Integer totalPrice;
-
     private Date date;
-
-    //    @Temporal(TemporalType.TIMESTAMP) - causes bug when saving...
-    //private String created;
-
-
-
-
-    /*
-    //private String comment;
-
-    @Column(name = "ship_name")
-    private String shipName;
-
-    @Column(name = "ship_address")
-    private String shipAddress;
-
-    @Column(name = "billing_address")
-    private String billingAddress;
-
-    @Column(name = "zip")
-    private String zip;
-
-    @Column(name = "country")
-    private String country;
-
-    @Column(name = "phone")
-    private String phone;
-
-    @Column(name = "total_price")
-    private Float totalPrice;
-
-    @Column(name = "total_cargo_price")
-    private Float totalCargoPrice;
-
-    @Column(name = "date")
-    @Type(type = "timestamp")
-    private Date date;
-
-    @Column(name = "shipped")
-    private Integer shipped;
-
-    @Column(name = "cargo_firm")
-    private String cargoFirm;
-
-    @Column(name = "tracking_number")
-    private String trackingNumber;
-
-    @OneToOne
-    @JoinColumn(name = "discount_id")
-    private Discount discount;
-
-    private String type;
-
-     @Column(name = "state")
-    private String state;
-
-
-     */
-
-
-}
+    }

@@ -3,8 +3,6 @@ package com.portoflio.api.services.impl;
 import com.portoflio.api.dao.CategoryRepository;
 import com.portoflio.api.dao.ProductCategoryRepository;
 import com.portoflio.api.dao.ProductRepository;
-import com.portoflio.api.dto.IllustrationCreateDTO;
-import com.portoflio.api.dto.IllustrationDTO;
 import com.portoflio.api.dto.ProductCreateDTO;
 import com.portoflio.api.dto.ProductDTO;
 import com.portoflio.api.exceptions.NotFoundException;
@@ -14,7 +12,6 @@ import com.portoflio.api.services.ImageService;
 import com.portoflio.api.services.ProductCategoryService;
 import com.portoflio.api.services.ProductService;
 import com.portoflio.api.spec.ProductSpec;
-import org.bson.types.Binary;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
@@ -23,13 +20,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import static java.lang.Float.parseFloat;
 
 @Service

@@ -1,11 +1,7 @@
 package com.portoflio.api.controllers;
 
-import com.portoflio.api.dto.ImageDTO;
-import com.portoflio.api.models.Image;
 import com.portoflio.api.services.ImageService;
-import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.portoflio.api.dto.ProductCreateDTO;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,19 +36,15 @@ public class Product {
     private Boolean visibility;
     public Product(ProductCreateDTO product) {
         this.name =         product.getName();
-        //this.date =         product.getDate();
         this.price =        product.getPrice();
         this.description =  product.getDescription();
         this.tags =         product.getTags();
-        //this.productCategories =     product.getProductCategories();
         this.visibility =   product.getVisibility();
     }
 
     public Product(Product product) {
         this.name = product.getName();
-        //this.date = product.getDate();
         this.price = product.getPrice();
-        //this.image_ids = product.getImage_ids();
         this.thumbnail_image_id = product.getThumbnail_image_id();
         this.description = product.getDescription();
         this.tags = product.getTags();

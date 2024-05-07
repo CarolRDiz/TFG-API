@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.List;
 import java.util.Set;
 
@@ -15,9 +14,7 @@ import java.util.Set;
 public class ProductDTO {
     private Long id;
     private String name;
-    //private String date;
     private Float price;
-    //private Binary image;
     private List<String> image_ids;
     private String thumbnail_image_id;
     private String description;

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.List;
 
 @Getter
@@ -20,9 +19,6 @@ public class OrderCreateDTO {
     private String city;
     private String postalCode;
     private String phone;
-    //private String status;
     private Integer totalPrice;
-
-    //Cart ITEMS
     private List<CartItemDTO> cartItems;
 }

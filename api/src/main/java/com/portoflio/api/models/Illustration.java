@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @Entity
 @Data
@@ -20,8 +17,6 @@ public class Illustration {
     private String name;
     private String description;
     private String image_id;
-    //private String date;
     private Boolean visibility;
-    //private List<String> tags;
 
 }

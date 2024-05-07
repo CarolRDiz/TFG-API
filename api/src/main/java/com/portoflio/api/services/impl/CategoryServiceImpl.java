@@ -4,18 +4,13 @@ import com.portoflio.api.dao.CategoryRepository;
 import com.portoflio.api.dao.ProductRepository;
 import com.portoflio.api.dto.CategoryCreateDTO;
 import com.portoflio.api.dto.CategoryDTO;
-import com.portoflio.api.dto.IllustrationDTO;
 import com.portoflio.api.exceptions.NotFoundException;
 import com.portoflio.api.models.Category;
-import com.portoflio.api.models.Illustration;
-import com.portoflio.api.models.Product;
-import com.portoflio.api.models.ProductCategory;
 import com.portoflio.api.services.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
-
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;

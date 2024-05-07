@@ -14,12 +14,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Table(name = "orderItems")
 public class OrderItem {
-    //OrderDetail
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //private String price; ------------ no
-
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "order_id")
@@ -35,6 +32,5 @@ public class OrderItem {
      */
     @Column(name = "amount")
     private Integer amount;
-
     //private GroupVariant groupVariant;
 }

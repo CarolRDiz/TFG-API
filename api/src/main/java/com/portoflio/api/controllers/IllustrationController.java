@@ -1,9 +1,7 @@
 package com.portoflio.api.controllers;
 
 import com.portoflio.api.dto.IllustrationCreateDTO;
-import com.portoflio.api.dto.IllustrationDTO;
 import com.portoflio.api.exceptions.NotFoundException;
-import com.portoflio.api.models.Illustration;
 import com.portoflio.api.services.IllustrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

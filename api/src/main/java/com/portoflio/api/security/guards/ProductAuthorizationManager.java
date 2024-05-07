@@ -7,7 +7,6 @@ import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
-
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -25,6 +24,5 @@ public class ProductAuthorizationManager implements AuthorizationManager<Request
             if (!admin && oProduct.get().getVisibility() == false) return new AuthorizationDecision(false);
             return new AuthorizationDecision(true);
         } return new AuthorizationDecision(false);
-        // move the logic from @webSecurity.check into this block
     }
 }
