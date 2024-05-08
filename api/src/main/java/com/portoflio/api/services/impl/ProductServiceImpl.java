@@ -81,7 +81,7 @@ public class ProductServiceImpl implements ProductService {
         }
         product = repository.save(product);
 
-        if(newProduct.getCategory_ids().size()!=0){
+        if(newProduct.getCategory_ids()!=null && newProduct.getCategory_ids().size()!=0){
             //POR CADA CATEGORIA
             for(Long category_id : newProduct.getCategory_ids()){
                 Optional<Category> oCategory = categoryRepository.findById(category_id);

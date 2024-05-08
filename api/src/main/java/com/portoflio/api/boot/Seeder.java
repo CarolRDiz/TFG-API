@@ -18,7 +18,9 @@ public class Seeder implements CommandLineRunner {
     public void run(String... args) {
         String pass = bCryptPasswordEncoder.encode("password");
         Users admin = new Users("admin", pass, true);
-        userRepository.save(admin);
+        Users user = new Users("user", pass, false);
 
+        userRepository.save(admin);
+        userRepository.save(user);
     }
 }

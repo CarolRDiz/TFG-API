@@ -43,7 +43,7 @@ public class OrderController {
     }
 
     @GetMapping("/order/{id}")
-    public ResponseEntity<Object> index(@PathVariable("id") Long id) {
+    public ResponseEntity<Object> findOrder(@PathVariable("id") Long id) {
         try {
             return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
         } catch (NotFoundException e) {

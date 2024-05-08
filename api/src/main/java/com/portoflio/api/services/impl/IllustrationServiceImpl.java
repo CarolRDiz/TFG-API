@@ -48,7 +48,9 @@ public class IllustrationServiceImpl implements IllustrationService {
     public void delete(Long id){
         Optional<Illustration> oIllustration = repository.findById(id);
         if (oIllustration.isPresent()) {
-            imageService.deleteImage(oIllustration.get().getImage_id());
+            if(oIllustration.get().getImage_id()!=null){
+                imageService.deleteImage(oIllustration.get().getImage_id());
+            }
             repository.delete(oIllustration.get());
         } else {
             throw new NotFoundException("Illustration not found");
