@@ -139,6 +139,8 @@ public class SecurityConfigJWT {
                 .userDetailsService(myUserDetailsService)
                 // authorization of preflight requests (OPTIONS)
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api-docs/**").permitAll())
+
                 // you can authorize/authenticate requests based on roles by matcher (regular expression)
                 //.authorizeHttpRequests(auth -> auth.requestMatchers("/prisoners/**").hasAuthority("SCOPE_ADMIN"))
 

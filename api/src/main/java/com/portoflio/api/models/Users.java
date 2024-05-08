@@ -1,6 +1,7 @@
 package com.portoflio.api.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class Users{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
+    @NotNull(message = "Email cannot be null")
     private String email;
     private String firstName;
     private String lastName;
@@ -36,6 +38,20 @@ public class Users{
         this.password = password;
         this.email = email;
     }
+
+    public Users(String email, String firstName, String lastName, String address, String secondAddress, String city, String postalCode, String phone, String password, boolean admin) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.secondAddress = secondAddress;
+        this.city = city;
+        this.postalCode = postalCode;
+        this.phone = phone;
+        this.password = password;
+        this.admin = admin;
+    }
+
     //TODO : CascadeType?
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<Order>();
