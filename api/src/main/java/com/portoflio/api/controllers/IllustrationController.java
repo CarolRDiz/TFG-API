@@ -25,7 +25,6 @@ public class IllustrationController {
     @Autowired
     IllustrationService service;
 
-
     // GET AN ILLUSTRATION
     @GetMapping("/illustrations/{id}/")
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")

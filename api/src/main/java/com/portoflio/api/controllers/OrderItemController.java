@@ -14,9 +14,12 @@ public class OrderItemController {
     @Autowired
     OrderItemRepository repository;
 
+    /*
     @GetMapping("/orderItems/")
     public ResponseEntity<Object> index() {
         return new ResponseEntity<>(repository.findAll(), HttpStatus.OK);
     }
+
+     */
 
 }
