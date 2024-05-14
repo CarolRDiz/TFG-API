@@ -136,6 +136,13 @@ public class SecurityConfigJWT {
         return http
                 //.cors().configurationSource(corsConfigurationSource()).and()
                 //.cors(Customizer.withDefaults())
+                .cors(cors -> cors.configurationSource(request -> {
+                    CorsConfiguration configuration = new CorsConfiguration();
+                    configuration.setAllowedOrigins(List.of("http://localhost:4200", allowed_origin));
+                    configuration.setAllowedMethods(List.of("GET","POST","PATCH", "DELETE"));
+                    configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
+                    return configuration;
+                }))
                 .csrf(AbstractHttpConfigurer::disable)
                 .userDetailsService(myUserDetailsService)
                 // authorization of preflight requests (OPTIONS)
@@ -227,6 +234,7 @@ public class SecurityConfigJWT {
     @Value("${allowedOrigin}")
     private String allowed_origin;
 
+    /*
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -237,6 +245,7 @@ public class SecurityConfigJWT {
         source.registerCorsConfiguration("/**",configuration);
         return source;
     }
+     */
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
