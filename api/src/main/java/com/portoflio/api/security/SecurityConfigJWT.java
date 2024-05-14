@@ -12,6 +12,7 @@ import com.portoflio.api.models.Product;
 import com.portoflio.api.security.guards.ProductAuthorizationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -223,10 +224,13 @@ public class SecurityConfigJWT {
         return new NimbusJwtEncoder(jwks);
     }
 
+    @Value("${allowedOrigin}")
+    private String allowed_origin;
+
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+        configuration.setAllowedOrigins(List.of("http://localhost:4200", allowed_origin));
         configuration.setAllowedMethods(List.of("GET","POST","PATCH", "DELETE"));
         configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
