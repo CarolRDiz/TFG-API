@@ -20,7 +20,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.PATCH;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600)
 public class ProductController {
     @Autowired
     ProductService service;

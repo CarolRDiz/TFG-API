@@ -17,7 +17,6 @@ import java.util.Optional;
 import static org.springframework.web.bind.annotation.RequestMethod.PATCH;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600)
 public class UsersController {
     @Autowired
     UsersRepository usersRepository;
