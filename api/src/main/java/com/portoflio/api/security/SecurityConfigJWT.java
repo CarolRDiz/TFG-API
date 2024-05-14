@@ -131,6 +131,9 @@ public class SecurityConfigJWT {
         };
     }
 
+    @Value("${allowedOrigin}")
+    private String allowed_origin;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -231,8 +234,6 @@ public class SecurityConfigJWT {
         return new NimbusJwtEncoder(jwks);
     }
 
-    @Value("${allowedOrigin}")
-    private String allowed_origin;
 
     /*
     @Bean
