@@ -19,8 +19,10 @@ public class Seeder implements CommandLineRunner {
     @Override
     public void run(String... args) {
         String pass = bCryptPasswordEncoder.encode("password");
+        System.out.println("-----OPTIONAL ADMIN");
         Optional<Users> oAdmin = userRepository.findByEmail("admin");
         if(!oAdmin.isPresent()){
+            System.out.println("-----OPTIONAL ADMIN NOT PRESENT");
             Users admin = new Users("admin", pass, true);
             userRepository.save(admin);
         }
