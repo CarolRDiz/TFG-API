@@ -7,8 +7,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 public class Seeder implements CommandLineRunner {
 
@@ -18,13 +16,15 @@ public class Seeder implements CommandLineRunner {
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
     @Override
     public void run(String... args) {
+        /*
         String pass = bCryptPasswordEncoder.encode("password");
-        System.out.println("-----OPTIONAL ADMIN");
-        Optional<Users> oAdmin = userRepository.findByEmail("admin");
-        if(!oAdmin.isPresent()){
-            System.out.println("-----OPTIONAL ADMIN NOT PRESENT");
-            Users admin = new Users("admin", pass, true);
-            userRepository.save(admin);
-        }
+        Users admin = new Users("admin", pass, true);
+        Users user = new Users("user@prueba","Nombre","Apellidos","Dirección 1","Dirección 2","Ciudad","11130","643786543", pass, false);
+
+        userRepository.save(admin);
+        userRepository.save(user);
+        */
     }
+
+
 }

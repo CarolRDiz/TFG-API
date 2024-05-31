@@ -17,11 +17,18 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) {
-        System.out.println("MyUserDetailsService: loadUserByUsername");
-        Optional<Users> user = usersRepository.findByEmail(email);
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException(email);
+        Optional<Users> oAdmin = usersRepository.findByUsername(email);
+        if (oAdmin.isPresent()) {
+            return new MyUserPrincipal(oAdmin.get());
         }
-        return new MyUserPrincipal(user.get());
+        else{
+            System.out.println("MyUserDetailsService: loadUserByUsername");
+            Optional<Users> user = usersRepository.findByEmail(email);
+            if (user.isEmpty()) {
+                throw new UsernameNotFoundException(email);
+            }
+            return new MyUserPrincipal(user.get());
+        }
+
     }
 }

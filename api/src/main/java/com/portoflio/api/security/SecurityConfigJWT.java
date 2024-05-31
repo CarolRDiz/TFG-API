@@ -83,9 +83,9 @@ public class SecurityConfigJWT {
     @Bean
     public UserDetailsService users() {
         return new InMemoryUserDetailsManager(
-                User.withUsername("carol")
+                User.withUsername("admin")
                         .password("{noop}password")
-                        .authorities("read")
+                        .authorities("SCOPE_ADMIN")
                         .build()
         );
     }
