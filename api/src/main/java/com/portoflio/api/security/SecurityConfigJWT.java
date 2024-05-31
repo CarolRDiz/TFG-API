@@ -79,7 +79,7 @@ public class SecurityConfigJWT {
     }
 
     private ProductAuthorizationManager productAuthorizationManager;
-    /*
+
     @Bean
     public UserDetailsService users() {
         return new InMemoryUserDetailsManager(
@@ -89,7 +89,7 @@ public class SecurityConfigJWT {
                         .build()
         );
     }
-     */
+
 
     /*
     @Autowired
