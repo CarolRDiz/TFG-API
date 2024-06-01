@@ -84,7 +84,7 @@ public class SecurityConfigJWT {
     public UserDetailsService users() {
         return new InMemoryUserDetailsManager(
                 User.withUsername("admin")
-                        .password("{noop}password")
+                        .password("$2a$10$5DXFN7E0r9iOsHJv8eNq/OpDgClwDFQiea/jtVxI/JbBOcXK.Ddr2")
                         .authorities("SCOPE_ADMIN")
                         .build()
         );
