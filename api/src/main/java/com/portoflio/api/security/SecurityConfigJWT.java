@@ -106,10 +106,6 @@ public class SecurityConfigJWT {
         return new AuthorizationManager<RequestAuthorizationContext>() {
             @Override
             public AuthorizationDecision check(Supplier<Authentication> authentication, RequestAuthorizationContext object) {
-                System.out.println("----AuthorizationManager");
-                System.out.println("getAuthorities: "+ authentication.get().getAuthorities().toString());
-                System.out.println("Parameter id: ");
-                System.out.println(object.getVariables().get("id"));
                 boolean admin = false;
                 //return new AuthorizationDecision(true);
                 for (final GrantedAuthority ga : authentication.get().getAuthorities()) {
@@ -117,16 +113,12 @@ public class SecurityConfigJWT {
                         admin = true;
                     }
                 }
-                System.out.println(admin);
                 Long id = Long.valueOf(object.getVariables().get("id"));
                 Optional<Product> oProduct = productRepository.findById(id);
                 if (oProduct.isPresent()) {
-                    System.out.println(oProduct.get().getVisibility() == false);
                     if (admin==false && oProduct.get().getVisibility() == false) return new AuthorizationDecision(false);
                     return new AuthorizationDecision(true);
                 } return new AuthorizationDecision(false);
-
-
             }
         };
     }
