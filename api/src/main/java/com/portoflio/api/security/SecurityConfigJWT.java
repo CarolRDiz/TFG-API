@@ -66,9 +66,22 @@ public class SecurityConfigJWT {
     @Autowired
     @Qualifier("myUserDetailsService")
     MyUserDetailsService myUserDetailsService;
-
     @Autowired
     ProductRepository productRepository;
+
+    private static final String[] WHITE_LIST_URL = {
+            "/api-docs/**",
+            "/api/v1/auth/**",
+            "/v3/**",
+            "/v2/api-docs",
+            "/v3/api-docs",
+            "/v3/api-docs/**",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/swagger**",
+            "/webjars/**",
+            "/swagger-ui.html"};
 
     @Bean
     public AuthenticationManager authenticationManager(MyUserDetailsService myUserDetailsService) {
@@ -142,14 +155,7 @@ public class SecurityConfigJWT {
                 .userDetailsService(myUserDetailsService)
                 // authorization of preflight requests (OPTIONS)
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api-docs/**").permitAll())
-
-                // you can authorize/authenticate requests based on roles by matcher (regular expression)
-                //.authorizeHttpRequests(auth -> auth.requestMatchers("/prisoners/**").hasAuthority("SCOPE_ADMIN"))
-
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/v3/**").permitAll())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/swagger-ui/**").permitAll())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/swagger**").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers(WHITE_LIST_URL).permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/token").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/registration/").permitAll())
 
