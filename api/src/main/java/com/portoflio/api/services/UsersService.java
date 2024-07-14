@@ -1,5 +1,6 @@
 package com.portoflio.api.services;
 
+import com.portoflio.api.dto.RegisterRequestDTO;
 import com.portoflio.api.dto.UserPrincipalDTO;
 import com.portoflio.api.dto.UsersDTO;
 import com.portoflio.api.models.Users;
@@ -11,5 +12,5 @@ public interface UsersService  extends Serializable {
     UserPrincipalDTO getPrincipal(String username);
     UserPrincipalDTO updateByFields (String email, Map<String, Object> fields);
     void delete(Long id);
-    void signUpUser (Users newUser);
+    void signUpUser (RegisterRequestDTO newUser);
 }

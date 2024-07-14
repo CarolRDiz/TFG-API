@@ -27,15 +27,19 @@ public class UsersServiceImpl implements UsersService {
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @Override
-    public void signUpUser (Users newUser){
+    public void signUpUser (RegisterRequestDTO request){
         //boolean userExists = usersRepository.findByUsername(newUser.getUsername()).isPresent();
-        boolean userExists = usersRepository.findByEmail(newUser.getEmail()).isPresent();
+        boolean userExists = usersRepository.findByEmail(request.getEmail()).isPresent();
         if (userExists){
             throw new IllegalStateException("Email already taken");
         }
-        String encodedPassword = bCryptPasswordEncoder.encode(newUser.getPassword());
-        newUser.setPassword(encodedPassword);
-        usersRepository.save(newUser);
+        String encodedPassword = bCryptPasswordEncoder.encode(request.getPassword());
+        var user = Users.builder()
+                .email(request.getEmail())
+                .password(encodedPassword)
+                .admin(false)
+                .build();
+        usersRepository.save(user);
     }
 
     @Override

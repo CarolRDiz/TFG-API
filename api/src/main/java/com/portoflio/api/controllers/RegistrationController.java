@@ -1,11 +1,10 @@
 package com.portoflio.api.controllers;
 
-import com.portoflio.api.dto.RegistrationDTO;
+import com.portoflio.api.dto.RegisterRequestDTO;
 import com.portoflio.api.services.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +15,7 @@ public class RegistrationController {
     RegistrationService registrationService;
 
     @PostMapping("/registration/")
-    public ResponseEntity<Object> register(@RequestBody RegistrationDTO newUser) {
+    public ResponseEntity<Object> register(@RequestBody RegisterRequestDTO newUser) {
         try {
             registrationService.register(newUser);
             return new ResponseEntity<>(HttpStatus.OK);

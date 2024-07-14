@@ -1,5 +1,5 @@
 package com.portoflio.api.services.impl;
-import com.portoflio.api.dto.RegistrationDTO;
+import com.portoflio.api.dto.RegisterRequestDTO;
 import com.portoflio.api.models.Users;
 import com.portoflio.api.services.RegistrationService;
 import com.portoflio.api.services.UsernameValidator;
@@ -17,7 +17,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private ModelMapper mapper = new ModelMapper();
     @Override
-    public void register (RegistrationDTO newUser){
+    public void register (RegisterRequestDTO newUser){
         //boolean isValidUsername = usernameValidator.test(newUser.getUsername());
         boolean isValidEmail = usernameValidator.test(newUser.getEmail());
         /*

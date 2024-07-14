@@ -17,13 +17,17 @@ public class Seeder implements CommandLineRunner {
     @Override
     public void run(String... args) {
         /*
-        String pass = bCryptPasswordEncoder.encode("password");
-        Users admin = new Users("admin", pass, true);
+
+
         Users user = new Users("user@prueba","Nombre","Apellidos","Dirección 1","Dirección 2","Ciudad","11130","643786543", pass, false);
 
-        userRepository.save(admin);
+
         userRepository.save(user);
+
         */
+        String pass = bCryptPasswordEncoder.encode("password");
+        Users admin = new Users("admin", pass, true);
+        userRepository.save(admin);
     }
 
 
